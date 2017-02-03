@@ -70,5 +70,5 @@ theme: sonic
 deploy:
   type: git
   repo: https://github.com/SonicDMG/SonicDMG.github.io
-  branch: gh-pages
+  branch: master
   message: "Site updated testing: {{ now('YYYY-MM-DD HH:mm:ss') }}"

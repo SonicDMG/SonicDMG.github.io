@@ -7,6 +7,9 @@ twitter_connect: https://twitter.com/SonicDMG
 linkedin_connect: https://www.linkedin.com/in/david-gilardi
 youtube_connect: https://www.youtube.com/channel/UCOYqZ4ckEso2-lYQjzpeaoQ
 
+# Language
+language: default
+
 # Content
 excerpt_link: Read More
 fancybox: true

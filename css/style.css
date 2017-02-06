@@ -313,6 +313,51 @@ body {
   width: 100%;
   height: 100%;
   background: url("images/banner.jpg") center #000;
+/*background: center #000*/
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  z-index: -1;
+}
+#image-block {
+  position: relative;
+  display: block;
+  margin-top: 10px;
+  width: 65%;
+  height: 100%;
+  margin-left: 18%;
+}
+#portrait {
+  position: relative;
+  display: block;
+  width: 33%;
+  height: 100%;
+  float: left;
+  background: url("images/portrait.jpg") center #000;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  z-index: -1;
+}
+#aerial {
+  position: relative;
+  display: block;
+  width: 33%;
+  height: 100%;
+  float: left;
+  background: url("images/aerial.png") center #000;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  z-index: -1;
+}
+#cluster {
+  position: relative;
+  display: block;
+  width: 33%;
+  height: 100%;
+  float: left;
+  background: url("images/ring.png") center #000;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -320,11 +365,11 @@ body {
 }
 #header-title {
   text-align: center;
-  height: 40px;
+  height: 160px;
   position: absolute;
   top: 50%;
   left: 0;
-  margin-top: -20px;
+  margin-top: -116px;
 }
 #logo,
 #subtitle {
@@ -344,7 +389,8 @@ body {
   letter-spacing: 1px;
 }
 #subtitle-wrap {
-  margin-top: 16px;
+  margin-top: 5px;
+/*margin-top: subtitle-size*/
 }
 #main-nav {
   float: left;

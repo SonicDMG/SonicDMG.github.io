@@ -16,7 +16,7 @@ excerpt_link: Read More
 fancybox: true
 
 # Sidebar
-sidebar: false
+sidebar: true
 widgets:
 - category
 - tag

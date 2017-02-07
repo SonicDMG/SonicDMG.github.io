@@ -1,7 +1,7 @@
 #header
   height: banner-height
   position: relative
-  border-bottom: 1px solid color-border
+  //border-bottom: 1px solid color-border
   &:before, &:after
     content: ""
     position: absolute
@@ -13,7 +13,7 @@
     background: linear-gradient(rgba(0, 0, 0, 0.2), transparent)
   &:after
     bottom: 0
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.2))
+    //background: linear-gradient(transparent, rgba(0, 0, 0, 0.2))
 
 #header-outer
   height: 100%
@@ -29,9 +29,15 @@
   left: 0
   width: 100%
   height: 100%
-  background: url(banner-url) center #000
-  /*background: center #000*/
-  background-size: cover
+  /*background: url(banner-url) center #000*/
+  background: center #25262a
+  /*background: center #000;*/ /* For browsers that do not support gradients */
+  /*background: -webkit-linear-gradient(black 27%, blue 100%);*/ /* Safari */
+  /*background: -o-linear-gradient(black 27%, blue 100%);*/ /* Opera 11.6 to 12.0 */
+  /*background: -moz-linear-gradient(black 27%, blue 100%);*/ /* Firefox 3.6 to 15 */
+  /*background: linear-gradient(black 27%, blue 100%);*/ /* Standard syntax */
+  /*background-repeat: no-repeat;*/
+  background-size: cover;
   z-index: -1
 
 #image-block
@@ -78,13 +84,13 @@
   position: absolute
   top: 50%
   left: 0
-  margin-top: logo-size * -2.90
+  margin-top: logo-size * -2.75
 
 $logo-text
   text-decoration: none
-  color: #fff
-  font-weight: 300
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3)
+  color: #555
+  font-weight: bold
+  //text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3)
 
 #logo
   @extend $logo-text

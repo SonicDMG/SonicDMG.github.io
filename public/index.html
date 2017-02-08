@@ -82,14 +82,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/02/02/hello-world/" class="article-date">
-  <time datetime="2017-02-02T19:02:32.000Z" itemprop="datePublished">02-02-2017</time>
+    <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" class="article-date">
+  <time datetime="2017-02-07T18:52:11.000Z" itemprop="datePublished">02-07-2017</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/test/">test</a>
+    <a class="article-category-link" href="/categories/Technical/">Technical</a>
   </div>
 
   </div>
@@ -100,7 +100,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/02/hello-world/">Hello World</a>
+      <a class="article-title" href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/">Mixed Workload DSE Cluster with Raspberry PI&#39;s</a>
     </h1>
   
 
@@ -108,23 +108,96 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>Alrighty, as I mentioned in my previous <a href="2017/02/07/I-m-Sure-You-Weren-t-Looking">post</a> I have a mixed-workload cluster (C*, search, graph) using a combination of 4 Raspberry PI’s and my laptop.  I had multiple things in mind when I started into this.</p>
+<ol>
+<li><p>Low cost for learning</p>
+</li>
+<li><p>Something I can break and not cry about</p>
+</li>
+<li><p>How low can one really go when setting up a cluster?</p>
+</li>
+<li><p>Get some DSE OpsCenter knowledge</p>
+</li>
+<li><p>These are Raspberry PI’s, they are just damn cool, so why not setup a cluster?!</p>
+</li>
+</ol>
+<h2 id="PIE-3-14-PI"><a href="#PIE-3-14-PI" class="headerlink" title="PIE?  3.14?  PI?"></a>PIE?  3.14?  PI?</h2>
+<div class="responsive-container" style="height:160px">
+    <div class="dummy"></div>
+    <div class="img-container">
+        <div class="centerer"></div>
+          <img src="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/pie-pi.jpg" title="pie" width="25%" height="auto">
+          <span><strong>+</strong></span>
+          <img src="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/raspberry.jpg" title="raspberries" width="25%" height="auto">
+          <span><strong>=</strong></span>
+          <img src="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/raspberrypi.jpg" title="raspberrypi" width="25%" height="auto">
+    </div>
+</div>
+
+<p>If you are not already familiar with RaspberryPI’s <a href="https://www.raspberrypi.org/" target="_blank" rel="external">go take a look</a>.  These are cool little machines for very little cost.</p>
+<p><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank" rel="external">Here are the specs for the model 3</a>, but just to summarize each node in our cluster only has 1GB of RAM and a 1.2GHz quad-core processor.  This is clearly not a setup you would use in your production environment.  This is, however, a great way to learn and experiment.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sonicdmg.github.io/2017/02/02/hello-world/" data-id="ciyvvs2520000yi4nhrbhuc7p" class="article-share-link">Share</a>
+      <a data-url="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" data-id="ciyxhn0ho0002v54n0d2bi8jl" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hello/">hello</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster/">cluster</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-I-m-Sure-You-Weren-t-Looking" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/" class="article-date">
+  <time datetime="2017-02-07T18:51:11.000Z" itemprop="datePublished">02-07-2017</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Something-Else/">Something Else</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/">I&#39;m Sure You Weren&#39;t Looking</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hi there and welcome to my blog.  As the title suggests I am pretty sure you had no idea this blog or page even existed.  This is most likely due to the fact that I had not published anything until….just now.  </p>
+<p>Wow, you are like….</p>
+<p><strong>THE FIRST PERSON HERE OMG!</strong></p>
+<iframe src="//giphy.com/embed/l3q2SubtPHg5E3utW?html5=true" width="480" height="266" frameborder="0" class="giphy-embed" allowfullscreen></iframe>
+
+<p>Seriously though, thanks for taking a look and make sure to come back and check out my other posts as I muse on things ranging from mishaps while up on silks to technical discussions on distributed database clusters.</p>
+<p>In my next post, I’m going to bring you through my experience setting up a Raspberry PI mixed-worlkload cluster using Cassandra.</p>
+<p>See ya :)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/" data-id="ciyxhn0hk0001v54n9z1iadnx" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OMG/">OMG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
 
     </footer>
   </div>
@@ -142,7 +215,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Something-Else/">Something Else</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Technical/">Technical</a></li></ul>
     </div>
   </div>
 
@@ -152,7 +225,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hello/">hello</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OMG/">OMG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
     </div>
   </div>
 
@@ -162,7 +235,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hello/" style="font-size: 10px;">hello</a>
+      <a href="/tags/OMG/" style="font-size: 10px;">OMG</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/fun-times/" style="font-size: 10px;">fun times</a> <a href="/tags/hi-there/" style="font-size: 10px;">hi there</a> <a href="/tags/raspberry-PI/" style="font-size: 10px;">raspberry PI</a> <a href="/tags/welcome/" style="font-size: 10px;">welcome</a>
     </div>
   </div>
 
@@ -184,7 +257,11 @@
       <ul>
         
           <li>
-            <a href="/2017/02/02/hello-world/">Hello World</a>
+            <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/">Mixed Workload DSE Cluster with Raspberry PI&#39;s</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/">I&#39;m Sure You Weren&#39;t Looking</a>
           </li>
         
       </ul>
@@ -215,6 +292,18 @@
   
 </nav>
     
+<script>
+  var disqus_shortname = 'https-sonicdmg-github-io';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 

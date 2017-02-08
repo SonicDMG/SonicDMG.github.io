@@ -3,17 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2017/2 | Aerial Dev</title>
+  <title>Mixed Workload DSE Cluster with Raspberry PI&#39;s | Aerial Dev</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="This is my description, my description is my friend">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Aerial Dev">
-<meta property="og:url" content="https://sonicdmg.github.io/archives/2017/02/index.html">
+  <meta name="description" content="Alrighty, as I mentioned in my previous post I have a mixed-workload cluster (C*, search, graph) using a combination of 4 Raspberry PI’s and my laptop.  I had multiple things in mind when I started in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mixed Workload DSE Cluster with Raspberry PI's">
+<meta property="og:url" content="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/index.html">
 <meta property="og:site_name" content="Aerial Dev">
-<meta property="og:description" content="This is my description, my description is my friend">
+<meta property="og:description" content="Alrighty, as I mentioned in my previous post I have a mixed-workload cluster (C*, search, graph) using a combination of 4 Raspberry PI’s and my laptop.  I had multiple things in mind when I started in">
+<meta property="og:image" content="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/pie-pi.jpg">
+<meta property="og:image" content="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/raspberry.jpg">
+<meta property="og:image" content="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/raspberrypi.jpg">
+<meta property="og:updated_time" content="2017-02-08T21:46:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Aerial Dev">
-<meta name="twitter:description" content="This is my description, my description is my friend">
+<meta name="twitter:title" content="Mixed Workload DSE Cluster with Raspberry PI's">
+<meta name="twitter:description" content="Alrighty, as I mentioned in my previous post I have a mixed-workload cluster (C*, search, graph) using a combination of 4 Raspberry PI’s and my laptop.  I had multiple things in mind when I started in">
+<meta name="twitter:image" content="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/pie-pi.jpg">
   
   
     <link rel="icon" href="/favicon.png">
@@ -80,59 +85,94 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" class="archive-article-date">
-  <time datetime="2017-02-07T18:52:11.000Z" itemprop="datePublished">Feb 7</time>
+        <section id="main"><article id="post-Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" class="article-date">
+  <time datetime="2017-02-07T18:52:11.000Z" itemprop="datePublished">02-07-2017</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Technical/">Technical</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/">Mixed Workload DSE Cluster with Raspberry PI&#39;s</a>
+    <h1 class="article-title" itemprop="name">
+      Mixed Workload DSE Cluster with Raspberry PI&#39;s
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/" class="archive-article-date">
-  <time datetime="2017-02-07T18:51:11.000Z" itemprop="datePublished">Feb 7</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/">I&#39;m Sure You Weren&#39;t Looking</a>
-    </h1>
-  
+        <p>Alrighty, as I mentioned in my previous <a href="2017/02/07/I-m-Sure-You-Weren-t-Looking">post</a> I have a mixed-workload cluster (C*, search, graph) using a combination of 4 Raspberry PI’s and my laptop.  I had multiple things in mind when I started into this.</p>
+<ol>
+<li><p>Low cost for learning</p>
+</li>
+<li><p>Something I can break and not cry about</p>
+</li>
+<li><p>How low can one really go when setting up a cluster?</p>
+</li>
+<li><p>Get some DSE OpsCenter knowledge</p>
+</li>
+<li><p>These are Raspberry PI’s, they are just damn cool, so why not setup a cluster?!</p>
+</li>
+</ol>
+<h2 id="PIE-3-14-PI"><a href="#PIE-3-14-PI" class="headerlink" title="PIE?  3.14?  PI?"></a>PIE?  3.14?  PI?</h2>
+<div class="responsive-container" style="height:160px">
+    <div class="dummy"></div>
+    <div class="img-container">
+        <div class="centerer"></div>
+          <img src="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/pie-pi.jpg" title="pie" width="25%" height="auto">
+          <span><strong>+</strong></span>
+          <img src="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/raspberry.jpg" title="raspberries" width="25%" height="auto">
+          <span><strong>=</strong></span>
+          <img src="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/raspberrypi.jpg" title="raspberrypi" width="25%" height="auto">
+    </div>
+</div>
 
-    </header>
+<p>If you are not already familiar with RaspberryPI’s <a href="https://www.raspberrypi.org/" target="_blank" rel="external">go take a look</a>.  These are cool little machines for very little cost.</p>
+<p><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank" rel="external">Here are the specs for the model 3</a>, but just to summarize each node in our cluster only has 1GB of RAM and a 1.2GHz quad-core processor.  This is clearly not a setup you would use in your production environment.  This is, however, a great way to learn and experiment.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" data-id="ciyxhn0ho0002v54n0d2bi8jl" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster/">cluster</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li></ul>
+
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">I&#39;m Sure You Weren&#39;t Looking</div>
+    </a>
   
+</nav>
 
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
         
           <aside id="sidebar">
@@ -221,11 +261,13 @@
 <script>
   var disqus_shortname = 'https-sonicdmg-github-io';
   
+  var disqus_url = 'https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

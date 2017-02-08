@@ -34,7 +34,7 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
@@ -72,3 +72,6 @@ deploy:
   repo: https://github.com/SonicDMG/SonicDMG.github.io
   branch: master
   message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
+
+# Comment support
+disqus_shortname: https-sonicdmg-github-io

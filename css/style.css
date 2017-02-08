@@ -1441,9 +1441,6 @@ pre .javascript .function {
   position: relative;
   width: 100%;
 }
-.dummy {
-  padding-top: 100%; /* forces 1:1 aspect ratio */
-}
 .img-container {
   position: absolute;
   top: 0;

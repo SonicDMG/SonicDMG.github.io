@@ -8,7 +8,7 @@ tags:
     - cluster
     - killrvideo
 ---
-Alrighty, as I mentioned in my previous [post](2017/02/07/I-m-Sure-You-Weren-t-Looking) I have a mixed-workload cluster (Cassandra, DSE search, DSE graph) using a combination of 4 Raspberry PI's and my laptop.  I had multiple things in mind when I started into this.
+Alrighty, as I mentioned in my previous [post](/2017/02/07/I-m-Sure-You-Weren-t-Looking) I have a mixed-workload cluster (Cassandra, DSE search, DSE graph) using a combination of 4 Raspberry PI's and my laptop.  I had multiple things in mind when I started into this.
 
 1. Low cost for learning
 

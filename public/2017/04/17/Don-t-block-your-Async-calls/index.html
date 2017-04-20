@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Don&#39;t block your Async calls | Aerial Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the DSE java driver.  Ensure that you are properly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Don't block your Async calls">
+<meta property="og:url" content="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/index.html">
+<meta property="og:site_name" content="Aerial Dev">
+<meta property="og:description" content="Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the DSE java driver.  Ensure that you are properly">
+<meta property="og:updated_time" content="2017-04-20T19:58:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Don't block your Async calls">
+<meta name="twitter:description" content="Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the DSE java driver.  Ensure that you are properly">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-91792814-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Aerial Dev</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Distributed databases and aerial arts all rolled up into one, oddly shaped...bundle</a>
+        </h2>
+      
+      <div id="image-block">
+        <div id="aerial"></div>
+        <div id="portrait"></div>
+        <div id="cluster"></div>
+      </div>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/About">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/SonicDMG" title="GitHub" target="blank"></a>
+        
+        
+          <a id="nav-twitter-link" class="nav-icon" href="https://twitter.com/SonicDMG" title="Twitter" target="blank"></a>
+        
+        
+          <a id="nav-linkedin-link" class="nav-icon" href="https://www.linkedin.com/in/david-gilardi" title="LinkedIn" target="blank"></a>
+        
+        
+          <a id="nav-youtube-link" class="nav-icon" href="https://www.youtube.com/channel/UCOYqZ4ckEso2-lYQjzpeaoQ" title="YouTube" target="blank"></a>
+        
+        <!-- <a id="nav-search-btn" class="nav-icon" title="Search"></a> -->
+      </nav>
+      <!-- <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://sonicdmg.github.io"></form>
+      </div> -->
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Don-t-block-your-Async-calls" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/17/Don-t-block-your-Async-calls/" class="article-date">
+  <time datetime="2017-04-17T14:31:42.000Z" itemprop="datePublished">04-17-2017</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Technical/">Technical</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Don&#39;t block your Async calls
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the <a href="http://docs.datastax.com/en/developer/java-driver/3.2/" target="_blank" rel="external">DSE java driver</a>.  Ensure that you are properly iterating through your results when making an async call.  You cannot simply iterate all of your rows using a for loop or something along the lines.  Ok, well, technically you can, but if you have more rows than your fetch size the <a href="http://docs.datastax.com/en/developer/java-driver/3.2/" target="_blank" rel="external">DSE java driver</a> will throw a big fat error your way letting you know you are blocking within an async call.  I should point that I am still somewhat new to working with asynchronous calls (yes, someone finally pulled up the rock I was under) so for you veterans this may be knowledge already gained from async NOOB 101.  By the way, here is the error the driver threw at me (thank you for doing so DSE driver peeps).</p>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Detected a synchronous call on an I/O thread, <span class="keyword">this</span> can cause deadlocks or unpredictable behavior. <span class="function">This generally happens when a Future callback calls a synchronous Session <span class="title">method</span> <span class="params">(execute()</span> or <span class="title">prepare</span><span class="params">()</span>), or iterates a result set past the fetch <span class="title">size</span> <span class="params">(causing an internal synchronous fetch of the next page of results)</span>. Avoid <span class="keyword">this</span> in your callbacks, or schedule them on a different executor.</span></div><div class="line">	com.datastax.driver.core.AbstractSession.<span class="title">checkNotInEventLoop</span><span class="params">(AbstractSession.java:<span class="number">206</span>)</span></div><div class="line">	com.datastax.driver.core.ArrayBackedResultSet$MultiPage.<span class="title">prepareNextRow</span><span class="params">(ArrayBackedResultSet.java:<span class="number">310</span>)</span></div><div class="line">	com.datastax.driver.core.ArrayBackedResultSet$MultiPage.<span class="title">isExhausted</span><span class="params">(ArrayBackedResultSet.java:<span class="number">269</span>)</span></div><div class="line">	com.datastax.driver.core.ArrayBackedResultSet$1.<span class="title">hasNext</span><span class="params">(ArrayBackedResultSet.java:<span class="number">143</span>)</span></div><div class="line">	com.datastax.driver.mapping.Result$1.<span class="title">hasNext</span><span class="params">(Result.java:<span class="number">102.</span>..</span></div></pre></td></tr></table></figure>
+<p>The reason is stated <a href="http://docs.datastax.com/en/developer/java-driver/3.2/manual/async/#async-paging" target="_blank" rel="external">here</a>.  I’ll quote it just to be clear “If you consume a ResultSet in a callback, be aware that iterating the rows will trigger synchronous queries as you page through the results. To avoid this, use getAvailableWithoutFetching to limit the iteration to the current page, and fetchMoreResults to get a future to the next page”.  Even though I read this before I started into this code I must have glossed over this concept the first time through as my implementation was acting very strange indeed.</p>
+<p>Let’s look at a simple example.  At this point in my code I already made an aynchronous call with session.executeAsync(), created a future, and returned my results into a callback.  The following examples are within my callback.<br>In the case below I mapped my results to the UserVideos entity and now I am iterating through those results to do something with each “userVideo” object.<br>This…DOES NOT work and will throw the error I mentioned above.</p>
+<p><em>Ehem, I have a utility class handle callbacks if you were wondering where that was.  I wanted to keep the example nice and simple.  Just know that by the time you see “.handle” we are within the callback.</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FutureUtils.buildCompletableFuture(userVideosMapper.mapAsync(future))</div><div class="line">        .handle((userVideos, ex) -&gt; &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">if</span> (userVideos != <span class="keyword">null</span>) &#123;</div><div class="line">                    <span class="keyword">for</span> (UserVideos userVideo : userVideos) &#123;</div><div class="line">                        <span class="string">"do something with userVideo here"</span></div><div class="line">                    &#125;</div></pre></td></tr></table></figure></p>
+<p>It seems so simple.  I returned my results and now I want to iterate over those results and do something with them, but these aren’t synchronous calls that block until complete.  I need to handle them properly from an asynchronous standpoint and only grab those results that have actually been returned.  The rest I will need to fetch with more asynchronous calls.</p>
+<p>Again, this is demonstrated very clearly <a href="http://docs.datastax.com/en/developer/java-driver/3.2/manual/async/#async-paging" target="_blank" rel="external">here</a> in the Async paging section.</p>
+<p>This…is a snippet pulled from the working code using the example given from the <a href="http://docs.datastax.com/en/developer/java-driver/3.2/manual/async/#async-paging" target="_blank" rel="external">async</a> page I keep referencing.  Now, I see how many items I have remaining without fetching, loop through the remaining items, and break out once I have exhausted the list.  You may not see in my example below, but once I “break;” I exit out and grab futures for any more items that may be left, rinse and repeat.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">FutureUtils.buildCompletableFuture(userVideosMapper.mapAsync(future))</div><div class="line">        .handle((userVideos, ex) -&gt; &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">if</span> (userVideos != <span class="keyword">null</span>) &#123;</div><div class="line">                    <span class="keyword">int</span> remaining = userVideos.getAvailableWithoutFetching();</div><div class="line">                    <span class="keyword">for</span> (UserVideos userVideo : userVideos) &#123;</div><div class="line">                        <span class="string">"do something with userVideo here"</span></div><div class="line"></div><div class="line">                        <span class="keyword">if</span> (--remaining == <span class="number">0</span>) &#123;</div><div class="line">                            <span class="keyword">break</span>;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div></pre></td></tr></table></figure></p>
+<p>The whole point of this post was to point out a potential “gotcha” with a very simple fix when dealing with asynchronous programming and the <a href="http://docs.datastax.com/en/developer/java-driver/3.2/" target="_blank" rel="external">DSE driver for Java</a>.  This one tripped me up for a moment until I realized my mistake.  Now that I know better my “futures” are looking bright in deed….see my joke there….ha….haha…..ha…<em>awkward pause</em>.  Honestly, this simple change tightend all of my async code up.  No more strange artifacts</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/" data-id="cj1qty8n90005b2km2kng6id0" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TIL/">TIL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/async/">async</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blocking/">blocking</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/killrvideo/">killrvideo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/02/13/Dropping-in-on-my-cluster/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Dropping in on my cluster</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Aerial/">Aerial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Something-Else/">Something Else</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Technical/">Technical</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OMG/">OMG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TIL/">TIL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aerial/">aerial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/async/">async</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blocking/">blocking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/datastax/">datastax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/drop/">drop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opscenter/">opscenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OMG/" style="font-size: 10px;">OMG</a> <a href="/tags/TIL/" style="font-size: 10px;">TIL</a> <a href="/tags/aerial/" style="font-size: 10px;">aerial</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/blocking/" style="font-size: 10px;">blocking</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/datastax/" style="font-size: 10px;">datastax</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/fun-times/" style="font-size: 10px;">fun times</a> <a href="/tags/hi-there/" style="font-size: 10px;">hi there</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/killrvideo/" style="font-size: 20px;">killrvideo</a> <a href="/tags/opscenter/" style="font-size: 10px;">opscenter</a> <a href="/tags/raspberry-PI/" style="font-size: 10px;">raspberry PI</a> <a href="/tags/welcome/" style="font-size: 10px;">welcome</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/17/Don-t-block-your-Async-calls/">Don&#39;t block your Async calls</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/13/Dropping-in-on-my-cluster/">Dropping in on my cluster</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/">Mixed Workload DSE Cluster with Raspberry PI&#39;s</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/">I&#39;m Sure You Weren&#39;t Looking</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 David Gilardi<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/About" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'https-sonicdmg-github-io';
+  
+  var disqus_url = 'https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

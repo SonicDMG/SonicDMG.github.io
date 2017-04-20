@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>I&#39;m Sure You Weren&#39;t Looking | Aerial Dev</title>
+  <title>Don&#39;t block your Async calls | Aerial Dev</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Hi there and welcome to my blog.  As the title suggests I am pretty sure you had no idea this blog or page even existed.  This is most likely due to the fact that I had not published anything until….j">
+  <meta name="description" content="Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the DSE java driver.  Ensure that you are properly">
 <meta property="og:type" content="article">
-<meta property="og:title" content="I'm Sure You Weren't Looking">
-<meta property="og:url" content="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/index.html">
+<meta property="og:title" content="Don't block your Async calls">
+<meta property="og:url" content="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/index.html">
 <meta property="og:site_name" content="Aerial Dev">
-<meta property="og:description" content="Hi there and welcome to my blog.  As the title suggests I am pretty sure you had no idea this blog or page even existed.  This is most likely due to the fact that I had not published anything until….j">
-<meta property="og:updated_time" content="2017-02-07T21:56:00.000Z">
+<meta property="og:description" content="Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the DSE java driver.  Ensure that you are properly">
+<meta property="og:updated_time" content="2017-04-18T03:00:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="I'm Sure You Weren't Looking">
-<meta name="twitter:description" content="Hi there and welcome to my blog.  As the title suggests I am pretty sure you had no idea this blog or page even existed.  This is most likely due to the fact that I had not published anything until….j">
+<meta name="twitter:title" content="Don't block your Async calls">
+<meta name="twitter:description" content="Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the DSE java driver.  Ensure that you are properly">
   
   
     <link rel="icon" href="/favicon.png">
@@ -94,14 +94,14 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-I-m-Sure-You-Weren-t-Looking" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Don-t-block-your-Async-calls" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/" class="article-date">
-  <time datetime="2017-02-07T18:51:11.000Z" itemprop="datePublished">02-07-2017</time>
+    <a href="/2017/04/17/Don-t-block-your-Async-calls/" class="article-date">
+  <time datetime="2017-04-17T14:31:42.000Z" itemprop="datePublished">04-17-2017</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Something-Else/">Something Else</a>
+    <a class="article-category-link" href="/categories/Technical/">Technical</a>
   </div>
 
   </div>
@@ -112,7 +112,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      I&#39;m Sure You Weren&#39;t Looking
+      Don&#39;t block your Async calls
     </h1>
   
 
@@ -120,24 +120,23 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Hi there and welcome to my blog.  As the title suggests I am pretty sure you had no idea this blog or page even existed.  This is most likely due to the fact that I had not published anything until….just now.  </p>
-<p>Wow, you are like….</p>
-<p><strong>THE FIRST PERSON HERE OMG!</strong></p>
-<iframe src="//giphy.com/embed/l3q2SubtPHg5E3utW?html5=true" width="480" height="266" frameborder="0" class="giphy-embed" allowfullscreen></iframe>
-
-<p>Seriously though, thanks for taking a look and make sure to come back and check out my other posts as I muse on things ranging from mishaps while up on silks to technical discussions on distributed database clusters.</p>
-<p>In my next post, I’m going to bring you through my experience setting up a Raspberry PI mixed-worlkload cluster using Cassandra.</p>
-<p>See ya :)</p>
+        <p>Or rather I should be saying that to myself.  So, TIL (today I learned) something simple yet profound while working with asynchronous programming and the <a href="http://docs.datastax.com/en/developer/java-driver/3.2/" target="_blank" rel="external">DSE java driver</a>.  Ensure that you are properly iterating through your results when making an async call.  You cannot simply iterate all of your rows using a for loop or something along the lines.  Ok, well, technically you can, but if you have more rows than your fetch size the <a href="http://docs.datastax.com/en/developer/java-driver/3.2/" target="_blank" rel="external">DSE java driver</a> will throw a big fat error your way letting you know you are blocking within an async call.  By the way, here is the error the driver threw at me (thank you for doing so DSE driver peeps). </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Detected a synchronous call on an I/O thread, <span class="keyword">this</span> can cause deadlocks or unpredictable behavior. <span class="function">This generally happens when a Future callback calls a synchronous Session <span class="title">method</span> <span class="params">(execute()</span> or <span class="title">prepare</span><span class="params">()</span>), or iterates a result set past the fetch <span class="title">size</span> <span class="params">(causing an internal synchronous fetch of the next page of results)</span>. Avoid <span class="keyword">this</span> in your callbacks, or schedule them on a different executor.</span></div><div class="line">	com.datastax.driver.core.AbstractSession.<span class="title">checkNotInEventLoop</span><span class="params">(AbstractSession.java:<span class="number">206</span>)</span></div><div class="line">	com.datastax.driver.core.ArrayBackedResultSet$MultiPage.<span class="title">prepareNextRow</span><span class="params">(ArrayBackedResultSet.java:<span class="number">310</span>)</span></div><div class="line">	com.datastax.driver.core.ArrayBackedResultSet$MultiPage.<span class="title">isExhausted</span><span class="params">(ArrayBackedResultSet.java:<span class="number">269</span>)</span></div><div class="line">	com.datastax.driver.core.ArrayBackedResultSet$1.<span class="title">hasNext</span><span class="params">(ArrayBackedResultSet.java:<span class="number">143</span>)</span></div><div class="line">	com.datastax.driver.mapping.Result$1.<span class="title">hasNext</span><span class="params">(Result.java:<span class="number">102.</span>..</span></div></pre></td></tr></table></figure>
+<p>The reason is stated <a href="http://docs.datastax.com/en/developer/java-driver/3.2/manual/async/#async-paging" target="_blank" rel="external">here</a>.  I’ll quote it just to be clear “If you consume a ResultSet in a callback, be aware that iterating the rows will trigger synchronous queries as you page through the results. To avoid this, use getAvailableWithoutFetching to limit the iteration to the current page, and fetchMoreResults to get a future to the next page”.  Even though I read this before I started into this code I must have glossed over this concept the first time through as my implementation was acting very strange indeed.</p>
+<p>Let’s look at a simple example.  At this point in my code I already made an aynchronous call with session.executeAsync(), created a future, and returned my results into a callback.  The following examples are within my callback.<br>In the case below I mapped my results to the UserVideos entity and now I am iterating through those results to do something with each “userVideo” object.<br>This…DOES NOT work and will throw the error I mentioned above.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (UserVideos userVideo : userVideos) &#123;</div><div class="line">    <span class="string">"do something with userVideo here"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>It seems so simple.  I returned my results and now I want to iterate over those results and do something with them, but these aren’t synchronous calls that block until complete.  I need to handle them properly from an asynchronous standpoint and only grab those results that have actually been returned.  The rest I will need to fetch with more asynchronous calls.</p>
+<p>Again, this is demonstrated very clearly <a href="http://docs.datastax.com/en/developer/java-driver/3.2/manual/async/#async-paging" target="_blank" rel="external">here</a> in the Async paging section.</p>
+<p>This…is a snippet pulled from the working code using the example given from the<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> remaining = userVideos.getAvailableWithoutFetching();</div><div class="line"><span class="keyword">for</span> (UserVideos userVideo : userVideos) &#123;</div><div class="line">    <span class="string">"do something with userVideo here"</span></div><div class="line"></div><div class="line">    <span class="keyword">if</span> (--remaining == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/" data-id="cj1m8292l0005ewkmembjkbyd" class="article-share-link">Share</a>
+      <a data-url="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/" data-id="cj1m8292a0001ewkmbfjp92ao" class="article-share-link">Share</a>
       
-        <a href="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OMG/">OMG</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TIL/">TIL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/async/">async</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blocking/">blocking</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/killrvideo/">killrvideo</a></li></ul>
 
     </footer>
   </div>
@@ -145,15 +144,11 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
-    <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Mixed Workload DSE Cluster with Raspberry PI&#39;s
-        
-      </div>
-    </a>
   
+    <a href="/2017/02/13/Dropping-in-on-my-cluster/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Dropping in on my cluster</div>
+    </a>
   
 </nav>
 
@@ -262,7 +257,7 @@ ga('send', 'pageview');
 <script>
   var disqus_shortname = 'https-sonicdmg-github-io';
   
-  var disqus_url = 'https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/';
+  var disqus_url = 'https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/';
   
   (function(){
     var dsq = document.createElement('script');

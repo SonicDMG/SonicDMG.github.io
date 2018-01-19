@@ -95,6 +95,54 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
+    <article id="post-Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/" class="article-date">
+  <time datetime="2018-01-10T14:28:42.000Z" itemprop="datePublished">01-10-2018</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/">Moving from Cassandra tables to Search with DataStax: Part 1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hi there and welcome to <strong>part 1</strong> of a three part series on upgrading our KillrVideo java reference application from Cassandra based tabular searches to using DSE Search.</p>
+<p>Here in <strong>part 1</strong>, we’ll take a look at the “before” picture and how we were previously performing searches.  I’ll give some examples of the types of searches and how those were implemented with Cassandra tables.  We’ll also talk a little about the “why” of moving to DSE Search.</p>
+<p>In <strong>part 2</strong>, I’ll explain the transition to DSE Search and what considerations I had to take into account along with a before and after code comparison.</p>
+<p>Finally, in <strong>part 3</strong>, we’ll take a look at our results along with some of the more advanced types of searches we can now perform.</p>
+<h2 id="Ok-let’s-do-this"><a href="#Ok-let’s-do-this" class="headerlink" title="Ok, let’s do this"></a>Ok, let’s do this</h2><p>First things first…assumptions!<br>If it isn’t obvious, we are using the Java based KillrVideo application for reference.  If you aren’t familiar with KillrVideo go take a look <a href="https://killrvideo.github.io/">here</a> to get up to speed.  In short, this is a real, open source, micro-service style application that we build and maintain to present examples and help folks understand the DataStax tech stack.  It’s also a nice way that I personally get some code time against the stack in a real application as compared to punching out demo apps.  </p>
+<p>We are using DataStax Enterprise from drivers to cluster.  All of the capabilties we’re talking about here are assumed to be within that ecosystem.</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sonicdmg.github.io/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/" data-id="cjchp6qtm000fqrkmfzwey3qx" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Ok-yea-so-maybe-it-s-been-a-while-since-I-posted" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/09/Ok-yea-so-maybe-it-s-been-a-while-since-I-posted/" class="article-date">
@@ -132,7 +180,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sonicdmg.github.io/2018/01/09/Ok-yea-so-maybe-it-s-been-a-while-since-I-posted/" data-id="cjc80pmut0007smkmft72npyz" class="article-share-link">Share</a>
+      <a data-url="https://sonicdmg.github.io/2018/01/09/Ok-yea-so-maybe-it-s-been-a-while-since-I-posted/" data-id="cjchp6qtj000cqrkm8miwmgxf" class="article-share-link">Share</a>
       
         <a href="https://sonicdmg.github.io/2018/01/09/Ok-yea-so-maybe-it-s-been-a-while-since-I-posted/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -181,7 +229,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/" data-id="cjc80pmuk0005smkmhyj7ih16" class="article-share-link">Share</a>
+      <a data-url="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/" data-id="cjchp6qsw0005qrkmrfxs13ud" class="article-share-link">Share</a>
       
         <a href="https://sonicdmg.github.io/2017/04/17/Don-t-block-your-Async-calls/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -227,7 +275,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sonicdmg.github.io/2017/02/13/Dropping-in-on-my-cluster/" data-id="cjc80pmu80001smkm8qt9l0o0" class="article-share-link">Share</a>
+      <a data-url="https://sonicdmg.github.io/2017/02/13/Dropping-in-on-my-cluster/" data-id="cjchp6qsq0002qrkmecori068" class="article-share-link">Share</a>
       
         <a href="https://sonicdmg.github.io/2017/02/13/Dropping-in-on-my-cluster/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -288,7 +336,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" data-id="cjc80pmur0006smkmwwet2dto" class="article-share-link">Share</a>
+      <a data-url="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/" data-id="cjchp6qta0007qrkm4o2jf3rc" class="article-share-link">Share</a>
       
         <a href="https://sonicdmg.github.io/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -340,7 +388,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/" data-id="cjc80pmuc0002smkmabh7y4p3" class="article-share-link">Share</a>
+      <a data-url="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/" data-id="cjchp6qsl0001qrkm8e8ncabv" class="article-share-link">Share</a>
       
         <a href="https://sonicdmg.github.io/2017/02/07/I-m-Sure-You-Weren-t-Looking/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -405,6 +453,10 @@ ga('send', 'pageview');
       <ul>
         
           <li>
+            <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/">Moving from Cassandra tables to Search with DataStax: Part 1</a>
+          </li>
+        
+          <li>
             <a href="/2018/01/09/Ok-yea-so-maybe-it-s-been-a-while-since-I-posted/">Ok, yea, so maybe it&#39;s been a while since I posted</a>
           </li>
         
@@ -418,10 +470,6 @@ ga('send', 'pageview');
         
           <li>
             <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/">Mixed Workload DSE Cluster with Raspberry PI&#39;s</a>
-          </li>
-        
-          <li>
-            <a href="/2017/02/07/I-m-Sure-You-Weren-t-Looking/">I&#39;m Sure You Weren&#39;t Looking</a>
           </li>
         
       </ul>

@@ -15,7 +15,7 @@ Finally, in **part 3**, we'll take a look at our results along with some of the 
 First things first...assumptions!  
 If it isn't obvious, we are using the Java based KillrVideo application for reference.  If you aren't familiar with KillrVideo go take a look [here][killrvideo] to get up to speed.  In short, this is a real, open source, micro-service style application that we build and maintain to present examples and help folks understand the DataStax tech stack.  It's also a nice way that I personally get some code time against the stack in a real application as compared to punching out demo apps.  
 
-We are using DataStax Enterprise from drivers to cluster.  All of the capabilties we're talking about here are assumed to be within that ecosystem.
+We are using DataStax Enterprise from drivers to cluster.  All of the capabilities we're talking about here are assumed to be within that ecosystem.
 
 <!-- more -->
 
@@ -42,12 +42,45 @@ At the bottom of the video detail page is a section labeled "More Videos Like Th
 Remember I mentioned **before moving** to using DSE Search these were all powered with Cassandra tables.  Let's break some of this down and take a look at some details.  Also, if you are interested check out this [pull request][pullrequest] up on github.  You can use this as a reference of the before and after changes if you so choose.
 
 #### Overview
-So overall the setup is pretty simple.  We have 3 searches that are supported by a combination of 3 Cassandra tables (the number of searches and tables just happen to match, there is no correlation between them), 3 [table entities][mappedclasses] that map to our Cassandra tables, and 3 [mapping objects][usingmapper] derived from our table entities.  Here is a simple visual represention.
+So overall the setup is pretty simple.  We have 3 searches that are supported by a combination of 3 Cassandra tables (the number of searches and tables just happen to match, there is no correlation between them), 3 [table entities][mappedclasses] that map to our Cassandra tables, and 3 [mapping objects][usingmapper] derived from our table entities.  Here is a simple visual representation.
 {% asset_img overviewarch.png "overview" %}
 
 Now, I'm really pointing out these particular items because they will come into play later once we move to using DSE Search, namely, we will need to remove most of them.  We'll leave that there for now and come back to it later.
 
-Of the 3 tables I just mentioned 2 of them exist only to support Cassandra based searches in KillrVideo, **tags_by_letter** and **videos_by_tag**.  They follow the [denormalized data model][datamodel] pattern we've come to love in Cassandra and were created solely to support this purpose.  The **videos** table stores all videos inserted into KillrVideo.  It is not specialized to Cassandra based searches and will come into play a little later.  
+Of the 3 tables I just mentioned 2 of them exist only to support Cassandra based searches in KillrVideo, **tags_by_letter** and **videos_by_tag**.  They follow the [denormalized data model][datamodel] pattern we've come to love in Cassandra and were created solely to support this purpose.  The **videos** table stores all videos inserted into KillrVideo.  It is not specialized to Cassandra based searches and will come into play a little later.
+
+I just mentioned that both **tags_by_letter** and **videos_by_tag** were specially created to support searches within KillrVideo.  Let's take a deeper look at both tables and see what's going on.  If you aren't familiar with primary keys in Apache Cassandra{% raw %}&#8482{% endraw %}
+ I highly suggest you take 5 minutes to read [Patrick McFadin's post][primarykeypatrick] on their importance.  This will better explain how they are applied below.
+
+Here is the CQL schema for the **tags_by_letter** table:
+```SQL
+CREATE TABLE IF NOT EXISTS tags_by_letter (
+    first_letter text,
+    tag text,
+    PRIMARY KEY (first_letter, tag)
+);
+```
+The **first_letter** column is the partition key with **tag** as a clustering column.  The partition key determines where data is located in your cluster while clustering columns handle how data is ordered within the partition.  This is especially useful in cases like a "typeahead" search where searches typically start with the first letter of a given search term and usually provide an alphabetical list of results.  This, in a sense, pre-optimizes query results and prevents us from having to sort our data, whether in query execution or code.
+
+Just to absolutely belabor this point (because who doesn't like belaboring something) here is an example of this in action.  Notice how the results are sorted automatically per the **tag** column with no sorting or extra commands needed in the query.
+{% asset_img tagsbyletterexample.png "tags_by_letter query example" %}
+
+
+Moving on, here is the CQL schema for the **videos_by_tag** table:
+```SQL
+CREATE TABLE IF NOT EXISTS videos_by_tag (
+    tag text,
+    videoid uuid,
+    added_date timestamp,
+    userid uuid,
+    name text,
+    preview_image_location text,
+    tagged_date timestamp,
+    PRIMARY KEY (tag, videoid)
+);
+```
+Again, this table was specially created to answer the question of what videos have a specified tag.  It uses **tag** as the partition key which allows for fast retrieval of videos that match a tag when querying.  The other fields you see listed are there to provide information required by our web tier UI.
+
 
 #### VideoAddedHandlers
 Another portion we need to keep an eye on is the VideoAddedHandlers class.  As the name implies this class is responsible for performing some action(s) every time a video is added to KillrVideo.  If you take a look at the two prepared statements within the init() method you should notice they are inserting data into the 2 search tables we mentioned above **tags_by_letter** and **videos_by_tag**.
@@ -72,13 +105,15 @@ Alrighty, so, we've gone over a high level overview of the various items and obj
 ##### "Typeahead" search 
 As I mentioned above the typeahead search simply takes the values the user types into the search bar and provides search suggestions based off of the sequence of letters typed in usually with a wildcard attached to the end of the sequence.  An example is something like "d" which might return "database", "decision", "document", etc... Then, if the user continues with something like "da" could be "database", "databases", "datastax", etc... and so on.
 
-In the Cassandra based search case this is supported by the **tags_by_letter** table.  Every time a video is added the related subscriber method in the VideoAddedHandlers class is called and **ALL** tags are inserted along with the first letter of the tag into their respective columns.  Since multiple tags are allowed this means we end up looping through and batching up all commands for each tag.  
+In the Cassandra based search case this is supported by the **tags_by_letter** table.  Every time a video is added the related subscriber method in the VideoAddedHandlers class is called and **ALL** tags are inserted along with the first letter of the tag into their respective columns.  Since multiple tags are allowed this means we end up looping through and batching up all commands for each tag.
 
 Then, when a user starts typing into the search bar we have the following query to get our results:
 ```SQL
 SELECT tag FROM tags_by_letter WHERE first_letter = ? AND tag >= ?
 ```
-Which returns all tags that match the query.  We loop through those results and send our tags back to the UI.  Pretty simple.
+Which returns all tags that match the query string from our search.  We loop through those results and send our tags back to the UI.  Pretty simple.  
+
+Remember I previously mentioned the **first_letter** column is the partition key and **tag** is the clustering column which handles data ordering.  This is where this all comes into play.  
 
 At this point I'd like to point out that we are working only with tags.  **Neither the name or description of any videos are considered**.  Sure, we could add support for this in our data model and code if we really wanted to, but it is something we have to explicitly take into account if we want that capability. 
 
@@ -97,10 +132,10 @@ The related videos or "More videos like this" section is very similar to the tag
 ## A couple things to point out
 For one, notice how our tables and searches work in lock-step.  The tables were created to support a particular set of searches or "questions" asked by our application UI and our code supports whatever CRUD operations are needed to maintain the data we use for searches.  Essentially this was all purpose made to fit our search needs exactly in a denormalized fashion.  This is quite different from how we may have handled things in the relational world.
 
-Also notice the number of transactions needed, mostly on the insert end, to constantly populate the search based tables with data when videos are added to the system.  Now, we're talking about Cassandra here so this is not really that much of an issue, but there is overhead associated with said transactions and the code needed to support it.
+Also notice the number of operations needed, mostly on the insert end, to constantly populate the search based tables with data when videos are added to the system.  Now, we're talking about Cassandra here so this is not really that much of an issue, but there is overhead associated with those operations and the code needed to support it.
 
 ## Why move to DSE Search?
-So, what happens now when we want to expand our searches to include more fields separate from tag, provide more varied results, or enable advanced searches?  Is there a way we could reduce the number of overall transactions and code needed to support our searches and also speed things up?  Lastly, can we do this in such a way that does not take a whole rethink of our data model?
+So, what happens now when we want to expand our searches to include more fields separate from tag, provide more varied results, or enable advanced searches?  Is there a way we could reduce the number of overall actions and code needed to support our searches and also speed things up?  Lastly, can we do this in such a way that does not take a whole rethink of our data model?
 
 Well, I think at this point you know exactly what I'm going to suggest, but you'll have to wait until part 2 of this series for details.
 
@@ -120,3 +155,4 @@ Take care :D
 [mappedclasses]: https://docs.datastax.com/en/developer/java-driver-dse/1.4/manual/object_mapper/creating/
 [usingmapper]: https://docs.datastax.com/en/developer/java-driver-dse/1.4/manual/object_mapper/using/
 [datamodel]: https://www.datastax.com/dev/blog/basic-rules-of-cassandra-data-modeling
+[primarykeypatrick]: https://www.datastax.com/dev/blog/the-most-important-thing-to-know-in-cassandra-data-modeling-the-primary-key

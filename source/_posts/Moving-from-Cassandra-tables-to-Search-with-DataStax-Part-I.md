@@ -1,7 +1,12 @@
 ---
 title: 'Moving from Cassandra tables to Search with DataStax: Part 1'
 date: 2018-01-10 09:28:42
+categories:
+    - Technical
 tags:
+    - killrvideo
+    - datastax
+    - search
 ---
 Hi there and welcome to **part 1** of a three part series on upgrading our KillrVideo java reference application from Cassandra based tabular searches to using DSE Search.
 

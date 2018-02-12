@@ -7,6 +7,7 @@ tags:
     - killrvideo
     - datastax
     - search
+    - DSE Search
 ---
 Hi there and welcome to **part 1** of a three part series on upgrading our KillrVideo java reference application from Cassandra based tabular searches to using DSE Search.
 

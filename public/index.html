@@ -95,6 +95,59 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
+    <article id="post-Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/12/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/" class="article-date">
+  <time datetime="2018-02-12T21:11:12.000Z" itemprop="datePublished">02-12-2018</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Technical/">Technical</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/12/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/">Moving from Cassandra tables to Search with DataStax: Part 2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using <a href="https://www.datastax.com/products/datastax-enterprise-search">DataStax Enterprise Search</a>.  If you haven’t read part 1 yet go take a look as it contains the backstory for this series.</p>
+<p>In part 1 we looked at the types of searches we perform in KillrVideo, scratched the surface on how those searches were implemented, and then I asked a set of questions that lead us into why we might use DSE Search.  Here in part 2, I’ll discuss why we moved to using DSE Search, detail what the transition encompassed, and explain considerations I took into account when making the switch.</p>
+<p>One thing I’d like to point out before we get started is the Cassandra only approach that we replaced with DSE Search is perfectly valid.  At times I make the case for why the Search approach is better IMO for our particular situation, but it is not broken or anything along those lines and it follows established denormalized query-first design patterns.</p>
+<h2 id="The-move-to-DSE-Search"><a href="#The-move-to-DSE-Search" class="headerlink" title="The move to DSE Search"></a>The move to DSE Search</h2><p>So, we decided to switch from using only Cassandra tables for our searches to using DSE Search.  That part is obvious enough, but some of you might be curious as to why we made this move.</p>
+<iframe src="https://giphy.com/embed/1M9fmo1WAFVK0" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+        
+          <p class="article-more-link">
+            <a href="/2018/02/12/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sonicdmg.github.io/2018/02/12/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/" data-id="cjcrrwtvz0007ymkmqd9cq3qp" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2018/02/12/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DSE-Search/">DSE Search</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/datastax/">datastax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/" class="article-date">
@@ -140,7 +193,7 @@ ga('send', 'pageview');
         <a href="https://sonicdmg.github.io/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/datastax/">datastax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DSE-Search/">DSE Search</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/datastax/">datastax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
 
     </footer>
   </div>
@@ -427,7 +480,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OMG/">OMG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TIL/">TIL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aerial/">aerial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/async/">async</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blocking/">blocking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/datastax/">datastax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/drop/">drop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opscenter/">opscenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DSE-Search/">DSE Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OMG/">OMG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TIL/">TIL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aerial/">aerial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/async/">async</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blocking/">blocking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/datastax/">datastax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/drop/">drop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opscenter/">opscenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
     </div>
   </div>
 
@@ -437,7 +490,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/OMG/" style="font-size: 10px;">OMG</a> <a href="/tags/TIL/" style="font-size: 10px;">TIL</a> <a href="/tags/aerial/" style="font-size: 10px;">aerial</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/blocking/" style="font-size: 10px;">blocking</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/datastax/" style="font-size: 15px;">datastax</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/fun-times/" style="font-size: 10px;">fun times</a> <a href="/tags/hi-there/" style="font-size: 10px;">hi there</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/killrvideo/" style="font-size: 20px;">killrvideo</a> <a href="/tags/opscenter/" style="font-size: 10px;">opscenter</a> <a href="/tags/raspberry-PI/" style="font-size: 10px;">raspberry PI</a> <a href="/tags/search/" style="font-size: 10px;">search</a> <a href="/tags/welcome/" style="font-size: 10px;">welcome</a>
+      <a href="/tags/DSE-Search/" style="font-size: 13.33px;">DSE Search</a> <a href="/tags/OMG/" style="font-size: 10px;">OMG</a> <a href="/tags/TIL/" style="font-size: 10px;">TIL</a> <a href="/tags/aerial/" style="font-size: 10px;">aerial</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/blocking/" style="font-size: 10px;">blocking</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/datastax/" style="font-size: 16.67px;">datastax</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/fun-times/" style="font-size: 10px;">fun times</a> <a href="/tags/hi-there/" style="font-size: 10px;">hi there</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/killrvideo/" style="font-size: 20px;">killrvideo</a> <a href="/tags/opscenter/" style="font-size: 10px;">opscenter</a> <a href="/tags/raspberry-PI/" style="font-size: 10px;">raspberry PI</a> <a href="/tags/search/" style="font-size: 13.33px;">search</a> <a href="/tags/welcome/" style="font-size: 10px;">welcome</a>
     </div>
   </div>
 
@@ -446,7 +499,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li></ul>
     </div>
   </div>
 
@@ -457,6 +510,10 @@ ga('send', 'pageview');
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/02/12/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/">Moving from Cassandra tables to Search with DataStax: Part 2</a>
+          </li>
         
           <li>
             <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/">Moving from Cassandra tables to Search with DataStax: Part 1</a>
@@ -472,10 +529,6 @@ ga('send', 'pageview');
         
           <li>
             <a href="/2017/02/13/Dropping-in-on-my-cluster/">Dropping in on my cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2017/02/07/Mixed-Workload-DSE-Cluster-with-Raspberry-PI-s/">Mixed Workload DSE Cluster with Raspberry PI&#39;s</a>
           </li>
         
       </ul>

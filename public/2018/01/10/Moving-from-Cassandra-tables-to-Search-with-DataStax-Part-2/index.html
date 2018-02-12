@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Moving from Cassandra tables to Search with DataStax: Part 2 | Aerial Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="LOCAL_ONE compared to LOCAL_QUORUM
+exclusion of conjunctions now that search expands beyond tags
+Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Sear">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Moving from Cassandra tables to Search with DataStax: Part 2">
+<meta property="og:url" content="https://sonicdmg.github.io/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/index.html">
+<meta property="og:site_name" content="Aerial Dev">
+<meta property="og:description" content="LOCAL_ONE compared to LOCAL_QUORUM
+exclusion of conjunctions now that search expands beyond tags
+Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Sear">
+<meta property="og:updated_time" content="2018-01-24T16:09:00.177Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Moving from Cassandra tables to Search with DataStax: Part 2">
+<meta name="twitter:description" content="LOCAL_ONE compared to LOCAL_QUORUM
+exclusion of conjunctions now that search expands beyond tags
+Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Sear">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-91792814-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Aerial Dev</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Distributed databases and aerial arts all rolled up into one, oddly shaped...bundle</a>
+        </h2>
+      
+      <div id="image-block">
+        <div id="aerial"></div>
+        <div id="portrait"></div>
+        <div id="cluster"></div>
+      </div>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/About">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/SonicDMG" title="GitHub" target="blank"></a>
+        
+        
+          <a id="nav-twitter-link" class="nav-icon" href="https://twitter.com/SonicDMG" title="Twitter" target="blank"></a>
+        
+        
+          <a id="nav-linkedin-link" class="nav-icon" href="https://www.linkedin.com/in/david-gilardi" title="LinkedIn" target="blank"></a>
+        
+        
+          <a id="nav-youtube-link" class="nav-icon" href="https://www.youtube.com/channel/UCOYqZ4ckEso2-lYQjzpeaoQ" title="YouTube" target="blank"></a>
+        
+        <!-- <a id="nav-search-btn" class="nav-icon" title="Search"></a> -->
+      </nav>
+      <!-- <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://sonicdmg.github.io"></form>
+      </div> -->
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/" class="article-date">
+  <time datetime="2018-01-10T16:09:12.000Z" itemprop="datePublished">01-10-2018</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Moving from Cassandra tables to Search with DataStax: Part 2
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>LOCAL_ONE compared to LOCAL_QUORUM</p>
+<p>exclusion of conjunctions now that search expands beyond tags</p>
+<p>Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Search.  If you haven’t read part 1 yet go take a look or just completely ignore it, up to you.  So, in part 1 we looked at the types of searches we perform in KillrVideo, scratched the surface on how those searches were implemented, and then I asked a set of questions that lead us into why we might use DSE Search.  Here in part 2, I’ll explain the transition to DSE Search and considerations I took into account to make the switch.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sonicdmg.github.io/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/" data-id="cjct9sc2s0007c8kmpjq935qs" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/datastax/">datastax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Moving from Cassandra tables to Search with DataStax: Part 3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Moving from Cassandra tables to Search with DataStax: Part 1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Aerial/">Aerial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Something-Else/">Something Else</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Technical/">Technical</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OMG/">OMG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TIL/">TIL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aerial/">aerial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/async/">async</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blocking/">blocking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/datastax/">datastax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/drop/">drop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opscenter/">opscenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OMG/" style="font-size: 10px;">OMG</a> <a href="/tags/TIL/" style="font-size: 10px;">TIL</a> <a href="/tags/aerial/" style="font-size: 10px;">aerial</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/blocking/" style="font-size: 10px;">blocking</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/datastax/" style="font-size: 16.67px;">datastax</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/fun-times/" style="font-size: 10px;">fun times</a> <a href="/tags/hi-there/" style="font-size: 10px;">hi there</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/killrvideo/" style="font-size: 20px;">killrvideo</a> <a href="/tags/opscenter/" style="font-size: 10px;">opscenter</a> <a href="/tags/raspberry-PI/" style="font-size: 10px;">raspberry PI</a> <a href="/tags/search/" style="font-size: 13.33px;">search</a> <a href="/tags/welcome/" style="font-size: 10px;">welcome</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-3/">Moving from Cassandra tables to Search with DataStax: Part 3</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/">Moving from Cassandra tables to Search with DataStax: Part 2</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/">Moving from Cassandra tables to Search with DataStax: Part 1</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/09/Ok-yea-so-maybe-it-s-been-a-while-since-I-posted/">Ok, yea, so maybe it&#39;s been a while since I posted</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/17/Don-t-block-your-Async-calls/">Don&#39;t block your Async calls</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 David Gilardi<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/About" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'https-sonicdmg-github-io';
+  
+  var disqus_url = 'https://sonicdmg.github.io/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

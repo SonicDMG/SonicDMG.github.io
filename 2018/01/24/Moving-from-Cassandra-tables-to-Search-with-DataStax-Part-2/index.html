@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Moving from Cassandra tables to Search with DataStax: Part 2 | Aerial Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Search.  If you haven’t read part 1 yet go take a look or just completely ignore it, up to you.
+In pa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Moving from Cassandra tables to Search with DataStax: Part 2">
+<meta property="og:url" content="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/index.html">
+<meta property="og:site_name" content="Aerial Dev">
+<meta property="og:description" content="Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Search.  If you haven’t read part 1 yet go take a look or just completely ignore it, up to you.
+In pa">
+<meta property="og:image" content="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/tagsbyletterorig.png">
+<meta property="og:image" content="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/videoswithsearch1.png">
+<meta property="og:image" content="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/videoswithsearch2.png">
+<meta property="og:image" content="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/hugesearchbarlist.png">
+<meta property="og:updated_time" content="2018-02-09T20:46:34.214Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Moving from Cassandra tables to Search with DataStax: Part 2">
+<meta name="twitter:description" content="Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Search.  If you haven’t read part 1 yet go take a look or just completely ignore it, up to you.
+In pa">
+<meta name="twitter:image" content="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/tagsbyletterorig.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-91792814-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Aerial Dev</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Distributed databases and aerial arts all rolled up into one, oddly shaped...bundle</a>
+        </h2>
+      
+      <div id="image-block">
+        <div id="aerial"></div>
+        <div id="portrait"></div>
+        <div id="cluster"></div>
+      </div>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/About">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/SonicDMG" title="GitHub" target="blank"></a>
+        
+        
+          <a id="nav-twitter-link" class="nav-icon" href="https://twitter.com/SonicDMG" title="Twitter" target="blank"></a>
+        
+        
+          <a id="nav-linkedin-link" class="nav-icon" href="https://www.linkedin.com/in/david-gilardi" title="LinkedIn" target="blank"></a>
+        
+        
+          <a id="nav-youtube-link" class="nav-icon" href="https://www.youtube.com/channel/UCOYqZ4ckEso2-lYQjzpeaoQ" title="YouTube" target="blank"></a>
+        
+        <!-- <a id="nav-search-btn" class="nav-icon" title="Search"></a> -->
+      </nav>
+      <!-- <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://sonicdmg.github.io"></form>
+      </div> -->
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/" class="article-date">
+  <time datetime="2018-01-24T16:09:12.000Z" itemprop="datePublished">01-24-2018</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Technical/">Technical</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Moving from Cassandra tables to Search with DataStax: Part 2
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hello again and welcome to part 2 of my 3 part series on moving from Cassandra tables to using DSE Search.  If you haven’t read part 1 yet go take a look or just completely ignore it, up to you.</p>
+<p>In part 1 we looked at the types of searches we perform in KillrVideo, scratched the surface on how those searches were implemented, and then I asked a set of questions that lead us into why we might use DSE Search.  Here in part 2, I’ll discuss why we moved to using DSE Search, detail what the transition encompassed, and explain considerations I took into account when making the switch.</p>
+<h2 id="The-move-to-DSE-Search"><a href="#The-move-to-DSE-Search" class="headerlink" title="The move to DSE Search"></a>The move to DSE Search</h2><p>So, we decided to switch from using Cassandra based tables for our searches to using DSE Search.  That part is obvious enough, but some of you might be curious as to why we made this move.</p>
+<iframe src="https://giphy.com/embed/1M9fmo1WAFVK0" width="480" height="270" frameborder="0" class="giphy-embed" allowfullscreen></iframe>
+
+<a id="more"></a>
+<p>All of the searches worked perfectly fine with Cassandra tables, they performed well, and honestly the code to implement was not terribly complex so what was it that pushed us over the edge?</p>
+<p>It was the need to expand searches to include more than tags and provide more comprehensive, “fuzzy” searches.</p>
+<h3 id="Why-why-why"><a href="#Why-why-why" class="headerlink" title="Why, why, why"></a>Why, why, why</h3><p>If you remember from part 1, I detailed what the various searches were all doing.  One common denominator was the use of the <strong>tag</strong> column for all of our searches.  Now, we wanted to expand our searches to include both video <strong>name</strong> and <strong>description</strong> columns along with <strong>tag</strong>.  Sure, I could modify the existing schema to include the new columns, but then I would have a data migration to worry about to populate the new columns on existing rows.  I would also have to touch all code points that intersected with any of the searches, update entity classes, change CQL queries, and potentially change or add code logic to handle the new columns not to mention the inflexibility of it all if I needed to add another column(s) down the line.</p>
+<p>Now in all frankness I would have to do some of this if we switched to using DSE Search, but as you’ll see it’s more of a removal task than a data model and design change.  While writing this article it also dawned on me I have the benefit of hindsight since we’re already using Search.  It’s easy to say “well just do it this way”, but when coming at this fresh and looking at what we were trying to accomplish it was a no brainer.  Comparing the Cassandra, Search, Analytics, and Graph workloads available to DSE the requirements here almost read like a <a href="https://www.datastax.com/products/datastax-enterprise-search" target="_blank" rel="external">product page for Search</a>.  It’s the right tool for the job.</p>
+<h2 id="Time-to-get-dirty"><a href="#Time-to-get-dirty" class="headerlink" title="Time to get dirty"></a>Time to get dirty</h2><p>Ok, we made the decision to use DSE Search and now it’s time to update the application.  Before I started hacking at code though I needed to figure out what I was dealing with from a query perspective.  Remember from part 1 of this series we have the following Cassandra based CQL queries to perform our searches.<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> tag <span class="keyword">FROM</span> tags_by_letter <span class="keyword">WHERE</span> first_letter = ? <span class="keyword">AND</span> tag &gt;= ?</div></pre></td></tr></table></figure></p>
+<p>and<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> videos_by_tag <span class="keyword">WHERE</span> tag = ?</div></pre></td></tr></table></figure></p>
+<p>Not very hard, but we need multiple, specialized tables to handle our searches.</p>
+<p>In order to start using DSE Search I needed to create a search index.  At this point I just want to point out my intent here is not to be a whole guide on how to create and implement search indexes.  The focus is on our case moving from Cassandra tables to DSE Search.  I will go over some of the highlights just to connect some dots and break down the sections that are relevant for this post.  If you are not familiar with how to create Search indexes I highly suggest you take a look at <a href="https://www.datastax.com/2017/05/whats-new-for-search-in-dse-5-1" target="_blank" rel="external">this blog post on creating search indexes in DSE 5.1</a> along with the <a href="https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/search/indexMgmt.html?hl=index%252Cmanagement" target="_blank" rel="external">documentation</a> on the same topic.  If you want a total deep dive on DSE Search I highly suggest you check out the <a href="https://academy.datastax.com/resources/ds310-datastax-enterprise-search" target="_blank" rel="external">DataStax Academy course on DSE Search</a> and prepare to have your mind blown.</p>
+<h3 id="Back-to-it"><a href="#Back-to-it" class="headerlink" title="Back to it"></a>Back to it</h3><p>This is the schema defined for our <strong>videos</strong> table.  It was mostly auto-generated after enabling Search with dse_tool.  If you are curious about how the schema is configured take a look <a href="https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/search/customizeSchemaSearch.html" target="_blank" rel="external">here</a>.  Why the <strong>videos</strong> table?  Because it holds all of the information necessary for our searches, namely, <strong>tags</strong> (as before), <strong>name</strong>, and <strong>description</strong> and since the <strong>videos</strong> table is populated on each video upload we get everything we need without having to write to multiple denormalized tables.  As a matter of fact, implementing our searches against the <strong>videos</strong> table allowed us to remove the VideoAddedHandlers class and the asynchronous Cassandra queries contained within, but I am getting ahead of myself.<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">schema</span> <span class="attr">name</span>=<span class="string">"autoSolrSchema"</span> <span class="attr">version</span>=<span class="string">"1.5"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">types</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">fieldType</span> <span class="attr">class</span>=<span class="string">"org.apache.solr.schema.TrieDateField"</span> <span class="attr">name</span>=<span class="string">"TrieDateField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">fieldType</span> <span class="attr">class</span>=<span class="string">"org.apache.solr.schema.TextField"</span> <span class="attr">name</span>=<span class="string">"TextField"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">analyzer</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">tokenizer</span> <span class="attr">class</span>=<span class="string">"solr.StandardTokenizerFactory"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"solr.LowerCaseFilterFactory"</span>/&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">analyzer</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">fieldType</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">fieldType</span> <span class="attr">class</span>=<span class="string">"org.apache.solr.schema.UUIDField"</span> <span class="attr">name</span>=<span class="string">"UUIDField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">fieldType</span> <span class="attr">class</span>=<span class="string">"org.apache.solr.schema.TrieIntField"</span> <span class="attr">name</span>=<span class="string">"TrieIntField"</span>/&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Type used for search text suggestions --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">fieldType</span> <span class="attr">class</span>=<span class="string">"solr.TextField"</span> <span class="attr">name</span>=<span class="string">"textSuggest"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">analyzer</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">tokenizer</span> <span class="attr">class</span>=<span class="string">"solr.StandardTokenizerFactory"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"solr.LowerCaseFilterFactory"</span>/&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">analyzer</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">fieldType</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">types</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">fields</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Basic fields --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"added_date"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TrieDateField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"location"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"preview_image_location"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">termVectors</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"true"</span> <span class="attr">name</span>=<span class="string">"tags"</span> <span class="attr">termVectors</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"userid"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"UUIDField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"videoid"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"UUIDField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"location_type"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TrieIntField"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">termVectors</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- For search autocomplete functionality, copy name and tags fields to search_suggestions field --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"search_suggestions"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"textSuggest"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"name"</span> <span class="attr">dest</span>=<span class="string">"search_suggestions"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"tags"</span> <span class="attr">dest</span>=<span class="string">"search_suggestions"</span> /&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">fields</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">uniqueKey</span>&gt;</span>videoid<span class="tag">&lt;/<span class="name">uniqueKey</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">schema</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>For our current discussion lets focus on the following snippet:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- For search autocomplete functionality, copy name and tags fields to search_suggestions field --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"search_suggestions"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"textSuggest"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"name"</span> <span class="attr">dest</span>=<span class="string">"search_suggestions"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"tags"</span> <span class="attr">dest</span>=<span class="string">"search_suggestions"</span> /&gt;</span></div></pre></td></tr></table></figure></p>
+<p>Notice the field name of “search_suggestions” and both the “name” and “tags” <strong>copyField</strong>‘s.  We essentially copied <strong>name</strong> and <strong>tag</strong> column information into a single field called “search_suggestions”.  This will come into play here in a moment.</p>
+<p>Then take a look at the “Basic fields” section:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Basic fields --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"added_date"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TrieDateField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"location"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"preview_image_location"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">termVectors</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"true"</span> <span class="attr">name</span>=<span class="string">"tags"</span> <span class="attr">termVectors</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"userid"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"UUIDField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"videoid"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"UUIDField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"location_type"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TrieIntField"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">termVectors</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">type</span>=<span class="string">"TextField"</span>/&gt;</span></div></pre></td></tr></table></figure></p>
+<p>As I mentioned above most of this was auto-generated.  This includes indexes for all of the columns in the <strong>videos</strong> table which allows us to perform searches against any of the columns in our table.  For our case we are using <strong>tags</strong>, <strong>name</strong>, and <strong>description</strong>.  If you are curious about why we might want the other columns I refer you to <em>OutOfScopeOfThisArticleException</em>.  It is something I will cover in the future.  The important takeaway is we have the needed columns indexed.</p>
+<p>Some of you might be thinking “wait, isn’t this more complex than just creating some Cassandra tables like you had before?”.  It’s about the same IMO.  We’re defining fields and their types in a schema, just a different type of schema, but once we do this we are all set to go…<strong>for all of our searches!</strong></p>
+<p>Now, one more thing on this whole schema thing before I move on.  Search index creation will be a <strong>whole lot easier in the upcoming DSE 6</strong>.  I’ll have some posts digging into this in the near future and I’m totally stoked to say the least so keep an eye out for updates.</p>
+<h3 id="Back-to-creating-our-index"><a href="#Back-to-creating-our-index" class="headerlink" title="Back to creating our index"></a>Back to creating our index</h3><p>I’ve pulled the following out of KillrVideo’s bootstrap script.  We use this to create all of the initial database artifacts needed to run KillrVideo on cluster creation.  This may obviously be different for you depending on your setup, but it should give you the general idea.  We are using dsetool to both create and reload our core against the <strong>videos</strong> tables in our <strong>killrvideo</strong> keyspace.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">'=&gt; Creating search core'</span></div><div class="line">  dsetool -h <span class="variable">$YOUR_CLUSTER_IP</span> create_core killrvideo.videos schema=<span class="variable">$YOUR_SCHEMA_LOCATION</span>/videos.schema.xml solrconfig=<span class="variable">$YOUR_SCHEMA_LOCATION</span>/videos.solrconfig.xml <span class="_">-l</span> <span class="variable">$USERNAME</span> -p <span class="variable">$PASSWORD</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">'=&gt; Reloading search core'</span></div><div class="line">  dsetool -h <span class="variable">$YOUR_CLUSTER_IP</span> reload_core killrvideo.videos schema=<span class="variable">$YOUR_SCHEMA_LOCATION</span>/videos.schema.xml solrconfig=<span class="variable">$YOUR_SCHEMA_LOCATION</span>/videos.solrconfig.xml <span class="_">-l</span> <span class="variable">$USERNAME</span> -p <span class="variable">$PASSWORD</span></div></pre></td></tr></table></figure></p>
+<p>Once this completes, that’s it.  Search indexes are in place and ready for use.  As we insert data into the Cassandra based <strong>videos</strong> table our indexes will automatically be updated.  No extra queries, explicit code, or anything else needed.</p>
+<h3 id="Let’s-take-stock"><a href="#Let’s-take-stock" class="headerlink" title="Let’s take stock"></a>Let’s take stock</h3><p>I think it’s a good idea to summarize where we’re at so far.  We’ve effectively replaced our 2 Cassandra based tables with a Search core loaded against the <strong>videos</strong> table, and we’ve loaded that same core for use within our database.  Within our search core we created a field named “search_suggestions” that combines data from the <strong>tags</strong> and <strong>name</strong> columns into a single field and now we can start performing searches using DSE Search against any of the fields we created in the search schema above.</p>
+<h2 id="Cassandra-based-search-vs-DSE-Search-comparisons"><a href="#Cassandra-based-search-vs-DSE-Search-comparisons" class="headerlink" title="Cassandra based search vs. DSE Search comparisons"></a>Cassandra based search vs. DSE Search comparisons</h2><p>So now comes the fun part where we get to take a look at how the different Cassandra and Search based searches compare.</p>
+<h3 id="“Typeahead”-search"><a href="#“Typeahead”-search" class="headerlink" title="“Typeahead” search"></a>“Typeahead” search</h3><p>Let’s start with the “typeahead” search from the search bar.  For our examples I’m using query parameters with value ‘d’.  This is the same as if I typed ‘d’ in the search bar from the UI.<br>Here’s the original CQL:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">    tag</div><div class="line"><span class="keyword">FROM</span> </div><div class="line">    tags_by_letter </div><div class="line"><span class="keyword">WHERE</span> </div><div class="line">    first_letter = <span class="string">'d'</span> <span class="keyword">AND</span> tag &gt;= <span class="string">'d'</span>;</div></pre></td></tr></table></figure></p>
+<p>Here’s the CQL with Search in place:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">    tags, <span class="keyword">name</span></div><div class="line"><span class="keyword">FROM</span></div><div class="line">    videos </div><div class="line"><span class="keyword">WHERE</span> </div><div class="line">    solr_query=<span class="string">'&#123;"q":"search_suggestions:d*", "paging":"driver"&#125;'</span>;</div></pre></td></tr></table></figure></p>
+<p>Right away there are a couple differences to point out.</p>
+<p>One, notice that in the original query I am selecting only the <strong>tag</strong> column.  This is because the <strong>tags_by_letter</strong> table only includes tags, there is nothing else to extract.  The purpose of the table is to provide tags in a very efficient manner.  In the Search based query I am selecting both <strong>tags</strong> and <strong>name</strong> in this case, but I could get any column from the <strong>videos</strong> table if I wanted to.  </p>
+<p>Also, notice the difference between the <strong>tag</strong> and <strong>tags</strong> columns between the two queries.  Since the Search based query is pulling from the <strong>videos</strong> table we return a set of tags in the <strong>tags</strong> column compared to a single tag per row.</p>
+<p>The final piece is probably the most obvious of all, the WHERE clause.  In the original query we are using both our partition key and clustering column to find rows that have the letter ‘d’ with tags &gt;= ‘d’.  I should note this will return an alphabetically ordered list of results because of how clustering columns work.  In the Search query we are looking for any words starting with the letter ‘d’ from the “search_suggestions” field.  This field is a combination of all tags and names.  Don’t forget <strong>tags</strong> is a set of tags per row.</p>
+<p>Now comes the fun.  Watch what happens when I execute each query.  Also remember that our goal was to expand our search results to provide more complex and varied results.<br><img src="/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/tagsbyletterorig.png" alt="tags_by_letter" title="tags_by_letter"><br>I’d like to point out there is no LIMIT clause in my query and this is from a database with thousands of videos.</p>
+<p>Now, here is the Search query.<br><img src="/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/videoswithsearch1.png" alt="videos" title="videos"><br>………<br>……………<br>……………………..<br><img src="/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/videoswithsearch2.png" alt="videos2" title="videos2"></p>
+<p>Notice not only the amount of results, but that we are matching across both the <strong>tags</strong> and <strong>name</strong> columns and we are matching within the set of values in the <strong>tags</strong> column.  I could have added <strong>description</strong> or any other relevant column from the <strong>videos</strong> table if I wanted to by simply adding it to my query.</p>
+<p>So, ok, we have more results, we have more variation in results, but you might notice we have a lot of repeated terms where the Cassandra based query returned a more succinct set of results.  In my case I handled this with a little regex and a TreeSet that ensures I don’t have repeats and results are ordered alphabetically naturally within the set.</p>
+<h4 id="Almost-there"><a href="#Almost-there" class="headerlink" title="Almost there"></a>Almost there</h4><p>Bear with me for another example to bring this together.  In the following case I purposely removed the constraint on my pagesize to illustrate the difference in results.  Remember with our Cassandra only query we returned just 5 tags out of thousands of videos.  These were simply the only tags that started with the letter ‘d’ in the database.  So, nothing wrong with this, it is doing exactly what it was designed for, but we wanted to provide a “richer” experience and expand beyond tags.  With Search in place we could now do exactly that and provide a definite increase in variation all while working right out of the <strong>videos</strong> table.  I could expand this further to include any column in my table by simply modifying my query, no data model change needed.<br><img src="/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/hugesearchbarlist.png" alt="long search bar list" title="long search bar list"></p>
+<p>I don’t know about you, but I could use a break right about now.</p>
+<iframe src="https://giphy.com/embed/jAe22Ec5iICCk" width="480" height="358" frameborder="0" class="giphy-embed" allowfullscreen></iframe>
+
+<p>Ok, moving on.</p>
+<h3 id="Tag-search-AND-“More-videos-like-this”-search"><a href="#Tag-search-AND-“More-videos-like-this”-search" class="headerlink" title="Tag search AND “More videos like this” search"></a>Tag search AND “More videos like this” search</h3><p>these are very similar<br>more like this C* simply finds other tags for the same video and grabs those videos as well<br>tag search doesn’t return anything if there are no tags<br>this is important in cases where videos are imported from youtube with no tags</p>
+<p>I’m just going to go ahead and combine these because the original Cassandra based searches are effectively the same.  For reference we are talking about the following query using ‘dsl’ as the query parameter for the <strong>tag</strong> column:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> videos_by_tag <span class="keyword">WHERE</span> tag = <span class="string">'dsl'</span>;</div></pre></td></tr></table></figure></p>
+<p>From the UI perspective this query was used both if an end-user clicked on any of the tag buttons on the video detail page and when viewing the “More videos like this” section at the bottom of the video detail page. The former case would simply pass the clicked tag value to the back-end and execute a query similar to what you see above. In our example it would be as if I clicked on the “dsl” button below.<br></p>
+<p>The latter case would essentially loop through all of the different tags associated with a video and execute the above query for each tag in the list.  In our example we have 4 queries for “datastax”, “dsl”, “graph”, and “gremlin”.  The results are then combined which are used to populate the “more video like this” section.<br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/" data-id="cjcrrwtvz0007ymkmqd9cq3qp" class="article-share-link">Share</a>
+      
+        <a href="https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/datastax/">datastax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Moving from Cassandra tables to Search with DataStax: Part 1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Aerial/">Aerial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Something-Else/">Something Else</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Technical/">Technical</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OMG/">OMG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TIL/">TIL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aerial/">aerial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/async/">async</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blocking/">blocking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/datastax/">datastax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/drop/">drop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fun-times/">fun times</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hi-there/">hi there</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/killrvideo/">killrvideo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opscenter/">opscenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry-PI/">raspberry PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/welcome/">welcome</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OMG/" style="font-size: 10px;">OMG</a> <a href="/tags/TIL/" style="font-size: 10px;">TIL</a> <a href="/tags/aerial/" style="font-size: 10px;">aerial</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/blocking/" style="font-size: 10px;">blocking</a> <a href="/tags/cluster/" style="font-size: 10px;">cluster</a> <a href="/tags/datastax/" style="font-size: 16.67px;">datastax</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/fun-times/" style="font-size: 10px;">fun times</a> <a href="/tags/hi-there/" style="font-size: 10px;">hi there</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/killrvideo/" style="font-size: 20px;">killrvideo</a> <a href="/tags/opscenter/" style="font-size: 10px;">opscenter</a> <a href="/tags/raspberry-PI/" style="font-size: 10px;">raspberry PI</a> <a href="/tags/search/" style="font-size: 13.33px;">search</a> <a href="/tags/welcome/" style="font-size: 10px;">welcome</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/">Moving from Cassandra tables to Search with DataStax: Part 2</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-I/">Moving from Cassandra tables to Search with DataStax: Part 1</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/09/Ok-yea-so-maybe-it-s-been-a-while-since-I-posted/">Ok, yea, so maybe it&#39;s been a while since I posted</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/17/Don-t-block-your-Async-calls/">Don&#39;t block your Async calls</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/13/Dropping-in-on-my-cluster/">Dropping in on my cluster</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 David Gilardi<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/About" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'https-sonicdmg-github-io';
+  
+  var disqus_url = 'https://sonicdmg.github.io/2018/01/24/Moving-from-Cassandra-tables-to-Search-with-DataStax-Part-2/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -185,7 +185,7 @@ Hopefully the amount, and variation of, the options in my search bar are obvious
 Ok, moving on.
 
 ### Tag search and the "more videos like this" section
-I'm just going to go ahead and combine these because the original Cassandra based searches are effectively the same.  For reference we are talking about the following query using 'dsl' as the query parameter for the **tag** column:
+I'm just going to go ahead and combine these because the original Cassandra only searches are effectively the same.  For reference we are talking about the following query using 'dsl' as the query parameter for the **tag** column:
 ```SQL
 SELECT * FROM videos_by_tag WHERE tag = 'dsl';
 ```
@@ -196,7 +196,7 @@ The latter case would essentially loop through all of the different tags associa
 {% asset_img morelikethis.png "more videos like this" %}
 
 #### Something to point out
-At this point I'm sure you have noticed that tags are a core component of how searches are powered.  The UI enforces including at least one tag on video upload and they are included in the design for every search.  However, we loosened this restriction when pulling videos from the back-end using the generator service.  We did this because the difference in the amount of videos available to us without tags compared to those with tags under the various topics we are pulling from YouTube is pretty huge.  There are also some pretty useful/cool videos out there that don't include tags.  For each of the Cassandra based searches, no tags, no videos, nothing.
+At this point I'm sure you have noticed that tags are a core component of how searches are powered.  The UI enforces including at least one tag on video upload and they are included in the design for every search.  However, we loosened this restriction when pulling videos from the back-end using the generator service.  We did this because the difference in the amount of videos available to us without tags compared to those with tags under the various topics we are pulling from YouTube is pretty huge.  There are also some pretty useful/cool videos out there that don't include tags.  For each of the Cassandra only searches, if there are no tags, you get no videos, nothing.
 {% asset_img notag.png "no tag" %}
 
 Case in point, take a look at the above image.  There are no tags at all, yet if you look at the "more videos like this" section at the bottom notice how relevant our results are when compared to the video we are viewing.  This is a nice example of how using Search allowed us to provide a more comprehensive experience by making it easy to include multiple facets of data and even cover the case of missing one of our key pieces of data.  In the previous solution the "more videos like this" section would be empty.

@@ -73,7 +73,7 @@ export default async function BlogPost({ params }: PageProps) {
 
   return (
     <article className="container max-w-3xl mx-auto py-12">
-      <div className="space-y-4 mb-8">
+      <div className="space-y-4 mb-4">
         <h1 className="text-4xl font-bold tracking-tight">{post.metadata.title}</h1>
         <div className="flex items-center space-x-4 text-sm text-muted-foreground">
           <time dateTime={post.metadata.date}>{formatDate(post.metadata.date)}</time>

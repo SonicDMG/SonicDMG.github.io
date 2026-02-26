@@ -2,13 +2,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getAllPosts } from '@/lib/posts';
 import { formatDate } from '@/lib/utils';
+import TerminalTyping from '@/components/TerminalTyping';
 
 export default function Home() {
   const posts = getAllPosts().slice(0, 3); // Get latest 3 posts
 
   return (
-    <div className="container py-12 md:py-24 lg:py-32">
-      <div className="flex flex-col items-center justify-center space-y-8 text-center">
+    <div className="container py-4 md:py-6 lg:py-8">
+      <div className="flex flex-col items-center justify-center space-y-6 text-center">
+        {/* Title at the top with terminal typing effect */}
+        <div className="w-full mb-4">
+          <TerminalTyping
+            text="Welcome to SonicDMG"
+            speed={80}
+            className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl"
+          />
+          <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+            AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle
+          </p>
+        </div>
+
         {/* Action Figure Hero Image */}
         <div className="terminal-image-frame action-figure">
           <Image
@@ -25,14 +38,8 @@ export default function Home() {
         </div>
 
         <div className="space-y-4">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Welcome to SonicDMG
-          </h1>
-          <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-            AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle
-          </p>
           <p className="mx-auto max-w-[700px] text-gray-600 md:text-lg dark:text-gray-300">
-            Hi, I'm David Jones-Gilardi, a Technical Evangelist specializing in AI agents, RAG (Retrieval-Augmented Generation),
+            Hi, I'm David Jones-Gilardi, a Devloper Relations Engineer specializing in AI agents, RAG (Retrieval-Augmented Generation),
             and context engineering. When I'm not building intelligent systems and exploring LLMs,
             you'll find me training for ninja warrior obstacles.
           </p>
@@ -72,7 +79,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mx-auto mt-16 max-w-5xl">
+      <div className="mx-auto mt-8 max-w-5xl">
         <h2 className="text-3xl font-bold tracking-tight mb-8">Recent Posts</h2>
         {posts.length === 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

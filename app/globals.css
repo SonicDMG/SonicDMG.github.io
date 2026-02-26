@@ -442,6 +442,11 @@ input:focus, textarea:focus, select:focus {
   text-align: left !important;
 }
 
+/* Reduce spacing for first heading in prose content */
+.prose > :first-child {
+  margin-top: 0 !important;
+}
+
 .prose h1,
 .prose h2,
 .prose h3,

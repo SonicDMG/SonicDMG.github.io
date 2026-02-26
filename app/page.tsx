@@ -94,31 +94,41 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group relative overflow-hidden rounded-lg border bg-background p-6 hover:shadow-lg transition-shadow"
-              >
-                <div className="space-y-2">
-                  <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
-                    {post.metadata.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-3">
-                    {post.metadata.description}
-                  </p>
-                  <div className="flex items-center text-xs text-muted-foreground pt-2">
-                    <time dateTime={post.metadata.date}>
-                      {formatDate(post.metadata.date)}
-                    </time>
-                    <span className="mx-2">•</span>
-                    <span>{post.readingTime}</span>
+          <>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {posts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group relative overflow-hidden rounded-lg border bg-background p-6 hover:shadow-lg transition-shadow"
+                >
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                      {post.metadata.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-3">
+                      {post.metadata.description}
+                    </p>
+                    <div className="flex items-center text-xs text-muted-foreground pt-2">
+                      <time dateTime={post.metadata.date}>
+                        {formatDate(post.metadata.date)}
+                      </time>
+                      <span className="mx-2">•</span>
+                      <span>{post.readingTime}</span>
+                    </div>
                   </div>
-                </div>
+                </Link>
+              ))}
+            </div>
+            <div className="flex justify-center mt-8">
+              <Link
+                href="/blog"
+                className="inline-flex items-center justify-center text-sm font-medium text-primary hover:underline"
+              >
+                View all posts →
               </Link>
-            ))}
-          </div>
+            </div>
+          </>
         )}
       </div>
     </div>

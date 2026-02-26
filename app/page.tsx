@@ -5,6 +5,18 @@ import { formatDate } from '@/lib/utils';
 import { SITE_CONFIG, UI_CONFIG, IMAGE_SIZES } from '@/lib/constants';
 import TerminalTyping from '@/components/TerminalTyping';
 
+/**
+ * Determines the age category of a post based on its date
+ * @param dateString - The date string from the post metadata
+ * @returns 'recent' for 2025+, 'legacy' for 2018 and earlier, 'standard' for in-between
+ */
+function getPostAgeCategory(dateString: string): 'recent' | 'legacy' | 'standard' {
+  const year = new Date(dateString).getFullYear();
+  if (year >= 2025) return 'recent';
+  if (year <= 2018) return 'legacy';
+  return 'standard';
+}
+
 export default function Home() {
   const posts = getAllPosts().slice(0, UI_CONFIG.RECENT_POSTS_LIMIT);
 
@@ -96,29 +108,51 @@ export default function Home() {
         ) : (
           <>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post) => (
-                <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  className="group relative overflow-hidden rounded-lg border bg-background p-6 hover:shadow-lg transition-shadow"
-                >
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
-                      {post.metadata.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-3">
-                      {post.metadata.description}
-                    </p>
-                    <div className="flex items-center text-xs text-muted-foreground pt-2">
-                      <time dateTime={post.metadata.date}>
-                        {formatDate(post.metadata.date)}
-                      </time>
-                      <span className="mx-2">•</span>
-                      <span>{post.readingTime}</span>
+              {posts.map((post) => {
+                const ageCategory = getPostAgeCategory(post.metadata.date);
+                const isLegacy = ageCategory === 'legacy';
+                const isRecent = ageCategory === 'recent';
+
+                return (
+                  <Link
+                    key={post.slug}
+                    href={`/blog/${post.slug}`}
+                    className={`group relative overflow-hidden rounded-lg border bg-background p-6 hover:shadow-lg transition-shadow ${
+                      isLegacy
+                        ? 'border-l-4 border-l-amber-500/50 opacity-90'
+                        : isRecent
+                        ? 'border-l-4 border-l-emerald-500/50'
+                        : ''
+                    }`}
+                  >
+                    {isLegacy && (
+                      <span className="absolute top-3 right-3 inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-950/30 px-2 py-1 text-xs font-medium text-amber-700 dark:text-amber-400 ring-1 ring-inset ring-amber-600/20 dark:ring-amber-500/30 z-10">
+                        Legacy
+                      </span>
+                    )}
+                    {isRecent && (
+                      <span className="absolute top-3 right-3 inline-flex items-center rounded-md bg-emerald-50 dark:bg-emerald-950/30 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 ring-1 ring-inset ring-emerald-600/20 dark:ring-emerald-500/30 z-10">
+                        New
+                      </span>
+                    )}
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                        {post.metadata.title}
+                      </h3>
+                      <p className={`text-sm text-muted-foreground line-clamp-3 ${isLegacy ? 'opacity-80' : ''}`}>
+                        {post.metadata.description}
+                      </p>
+                      <div className="flex items-center text-xs text-muted-foreground pt-2">
+                        <time dateTime={post.metadata.date}>
+                          {formatDate(post.metadata.date)}
+                        </time>
+                        <span className="mx-2">•</span>
+                        <span>{post.readingTime}</span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
             <div className="flex justify-center mt-8">
               <Link

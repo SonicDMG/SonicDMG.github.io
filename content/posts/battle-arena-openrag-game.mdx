@@ -1,0 +1,103 @@
+---
+title: "Building Battle-Arena: A Deck Battling Game with OpenRAG and Next.js"
+date: "2025-12-29"
+description: "How we built an AI-powered deck battling game using OpenRAG for character storage and battle mechanics"
+tags: ["openrag", "nextjs", "ai", "game-development", "langflow"]
+category: "Technical"
+author: "David Gilardi"
+---
+
+Hey all! I'm excited to share a deck battling game a few of us built in Next.js using [OpenRAG](https://github.com/langflow-ai/openrag) and the OpenRAG SDK.
+
+## What is Battle-Arena?
+
+The general idea is that you can create and load whatever kinds of heroes and monsters you want, then battle them. OpenRAG provides the character storage and search mechanisms along with the underlying AI agent that's used to help generate characters and provide battle summaries.
+
+For example, let's say I want to create an AI-powered space ship named "Bob" as a hero and then a "Blanket Monster" as a monster to battle (yes, I have kids). You can totally do that in Battle-Arena. Notice the two selected cards in the image below.
+
+![Battle Arena character selection](/posts/battle-arena-openrag-game/battle-arena-selection.png)
+
+![Bob card back with ability details](/posts/battle-arena-openrag-game/bob-card.png)
+
+![Blanket Monster card back with ability details](/posts/battle-arena-openrag-game/blanket-monster-card.png)
+
+Pick 'em and battle 'em.
+
+## Creating Characters
+
+There are multiple ways to create characters in Battle-Arena.
+
+### Method 1: Using the Character Creator
+
+One way is to use the "Add Your Hero/Monster" card from the landing page. This will bring you to the character creator which you can use to generate a name, stats, and images for your character based on your description.
+
+![Character creator page](/posts/battle-arena-openrag-game/character-creator.png)
+
+### Method 2: Loading from OpenRAG
+
+The other method is to simply load a character sheet directly into OpenRAG, then search for it from the load data page. If it's not already in your OpenRAG knowledge base, you can easily add tools like web search to your OpenRAG agent so it can look to the web for details about your character. Battle-Arena will then apply the needed prompts to create a character with hit points, abilities, etc.
+
+![Web search tools added to the OpenRAG agent](/posts/battle-arena-openrag-game/web-search-tools.png)
+
+Here's an example creating a character based on "Billy the Kid":
+
+![Searching for Billy the Kid](/posts/battle-arena-openrag-game/billy-search.png)
+
+![Loading Billy the Kid from OpenRAG](/posts/battle-arena-openrag-game/billy-loading.png)
+
+After creating an image for the new character, I now have stats and can play it.
+
+![Billy the Kid hero card](/posts/battle-arena-openrag-game/billy-card.png)
+
+![Card battle in action](/posts/battle-arena-openrag-game/card-battle.gif)
+
+## Notable Features
+
+Other than playing the game and battling monsters, here are some notable features:
+
+- **Load heroes and monsters directly in OpenRAG via the SDK** - Seamless integration with your OpenRAG knowledge base
+- **Store heroes and monsters back to OpenRAG** - Save your creations for reference later
+- **Quickly modify the OpenRAG agent** - Support extended cases like using web tools to search for data
+- **Bulk load heroes/monsters by search type** - Efficiently populate your roster
+
+## Technical Implementation
+
+The OpenRAG SDK makes interfacing with OpenRAG really quite easy from a code perspective. I can worry about the game mechanics and let OpenRAG handle the data storage, retrieval, and AI-powered character generation.
+
+This separation of concerns allowed us to focus on:
+- Game logic and battle mechanics
+- UI/UX for character selection and battles
+- Image generation and card design
+- Battle summaries powered by AI
+
+While OpenRAG handles:
+- Character data storage and indexing
+- Semantic search for character retrieval
+- AI agent orchestration for character generation
+- Knowledge base management
+
+## GitHub Repository
+
+Here's the GitHub repo: [https://github.com/SonicDMG/openrag-langflow-app](https://github.com/SonicDMG/openrag-langflow-app)
+
+This is a work in progress. I'm working to clean up the codebase, create better readme instructions, and add some new features like the ability to snap an image of yourself to load as a playable character in the game.
+
+## What's Next?
+
+It's honestly been a ton of fun to build and the OpenRAG SDK makes interfacing with OpenRAG really quite straightforward. The ability to leverage AI for character generation while maintaining a structured game system has opened up some really interesting possibilities.
+
+### Future Features
+
+Some ideas I'm exploring:
+- Camera integration to create characters from photos
+- More complex battle mechanics
+- Multiplayer support
+- Character evolution and progression systems
+- Tournament modes
+
+## Get Involved
+
+What kind of features would you like to see added to the game? Any questions about the implementation? Feel free to check out the repo and contribute your ideas!
+
+Take care,  
+Dave

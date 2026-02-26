@@ -7,12 +7,12 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="container max-w-3xl py-12">
+    <div className="container max-w-3xl mx-auto py-12">
       <div className="space-y-6">
         <h1 className="text-4xl font-bold tracking-tight">About Me</h1>
         
         {/* Portrait Image */}
-        <div className="terminal-image-frame portrait">
+        <div className="pixel-image-frame portrait">
           <Image
             src="/david-portrait.jpg"
             alt="David Jones-Gilardi - Developer Relations Engineer and Ninja Warrior Enthusiast"
@@ -41,7 +41,7 @@ export default function AboutPage() {
           </p>
 
           {/* Conference/Professional Image */}
-          <div className="terminal-image-frame conference">
+          <div className="pixel-image-frame conference">
             <Image
               src="/david-conference.jpg"
               alt="David Jones-Gilardi speaking at a technical conference"

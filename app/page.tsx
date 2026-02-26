@@ -4,6 +4,7 @@ import { getAllPosts } from '@/lib/posts';
 import { formatDate } from '@/lib/utils';
 import { SITE_CONFIG, UI_CONFIG, IMAGE_SIZES } from '@/lib/constants';
 import TerminalTyping from '@/components/TerminalTyping';
+import HandDrawnAnnotation from '@/components/HandDrawnAnnotation';
 
 /**
  * Determines the age category of a post based on its date
@@ -98,19 +99,29 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Action Figure Hero Image */}
-          <div className="terminal-image-frame action-figure">
-            <Image
-              src="/sonicdmg-action-figure.png"
-              alt="SonicDMG Action Figure - Limited Edition Developer Relations Engineer with Ninja Warrior Training Action"
-              width={IMAGE_SIZES.actionFigure.width}
-              height={IMAGE_SIZES.actionFigure.height}
-              priority
-              className="mx-auto"
-            />
-            <div className="image-caption">
-              [COLLECTOR'S EDITION]
+          {/* Action Figure Hero Image with Hand-Drawn Annotation */}
+          <div className="relative">
+            <div className="terminal-image-frame action-figure">
+              <Image
+                src="/sonicdmg-action-figure.png"
+                alt="SonicDMG Action Figure - Limited Edition Developer Relations Engineer with Ninja Warrior Training Action"
+                width={IMAGE_SIZES.actionFigure.width}
+                height={IMAGE_SIZES.actionFigure.height}
+                priority
+                className="mx-auto"
+              />
+              <div className="image-caption">
+                [COLLECTOR'S EDITION]
+              </div>
             </div>
+            
+            {/* Hand-drawn annotation pointing to the action figure */}
+            <HandDrawnAnnotation
+              position="bottom-left"
+              scale={0.9}
+              rotation={-8}
+              className="hidden sm:block -left-24 md:-left-32 lg:-left-36 bottom-40 md:bottom-48 lg:bottom-56"
+            />
           </div>
 
           <div className="space-y-4">

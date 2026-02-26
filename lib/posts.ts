@@ -6,6 +6,10 @@ import { Post, PostMetadata } from './types';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
 
+/**
+ * Gets all post slugs from the posts directory
+ * @returns Array of post slugs (filenames without .mdx extension)
+ */
 export function getPostSlugs(): string[] {
   if (!fs.existsSync(postsDirectory)) {
     return [];
@@ -13,6 +17,34 @@ export function getPostSlugs(): string[] {
   return fs.readdirSync(postsDirectory).filter((file) => file.endsWith('.mdx'));
 }
 
+/**
+ * Validates that required metadata fields are present and normalizes legacy fields
+ * @param data - The metadata object to validate
+ * @throws Error if required fields are missing
+ */
+function validatePostMetadata(data: any): asserts data is PostMetadata {
+  if (!data.title || typeof data.title !== 'string') {
+    throw new Error('Post metadata missing required field: title');
+  }
+  if (!data.date || typeof data.date !== 'string') {
+    throw new Error('Post metadata missing required field: date');
+  }
+  
+  // Normalize excerpt to description for backward compatibility
+  if (!data.description && data.excerpt) {
+    data.description = data.excerpt;
+  }
+  
+  if (!data.description || typeof data.description !== 'string') {
+    throw new Error('Post metadata missing required field: description or excerpt');
+  }
+}
+
+/**
+ * Retrieves a single post by its slug
+ * @param slug - The post slug (with or without .mdx extension)
+ * @returns Post object or null if not found or invalid
+ */
 export function getPostBySlug(slug: string): Post | null {
   try {
     const realSlug = slug.replace(/\.mdx$/, '');
@@ -24,20 +56,30 @@ export function getPostBySlug(slug: string): Post | null {
     
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
+    
+    // Validate metadata
+    validatePostMetadata(data);
+    
     const stats = readingTime(content);
 
     return {
       slug: realSlug,
-      metadata: data as PostMetadata,
+      metadata: data,
       content,
       readingTime: stats.text,
     };
   } catch (error) {
-    console.error(`Error reading post ${slug}:`, error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`Error reading post ${slug}:`, error);
+    }
     return null;
   }
 }
 
+/**
+ * Retrieves all published posts, sorted by date (newest first)
+ * @returns Array of Post objects
+ */
 export function getAllPosts(): Post[] {
   const slugs = getPostSlugs();
   const posts = slugs
@@ -48,43 +90,3 @@ export function getAllPosts(): Post[] {
   
   return posts;
 }
-
-export function getPostsByTag(tag: string): Post[] {
-  const allPosts = getAllPosts();
-  return allPosts.filter((post) => 
-    post.metadata.tags?.some((t) => t.toLowerCase() === tag.toLowerCase())
-  );
-}
-
-export function getPostsByCategory(category: string): Post[] {
-  const allPosts = getAllPosts();
-  return allPosts.filter((post) => 
-    post.metadata.category?.toLowerCase() === category.toLowerCase()
-  );
-}
-
-export function getAllTags(): string[] {
-  const allPosts = getAllPosts();
-  const tags = new Set<string>();
-  
-  allPosts.forEach((post) => {
-    post.metadata.tags?.forEach((tag) => tags.add(tag));
-  });
-  
-  return Array.from(tags).sort();
-}
-
-export function getAllCategories(): string[] {
-  const allPosts = getAllPosts();
-  const categories = new Set<string>();
-  
-  allPosts.forEach((post) => {
-    if (post.metadata.category) {
-      categories.add(post.metadata.category);
-    }
-  });
-  
-  return Array.from(categories).sort();
-}
-
-// Made with Bob

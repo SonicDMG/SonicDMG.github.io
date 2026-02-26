@@ -18,5 +18,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
-// Made with Bob

@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { getAllPosts, getPostBySlug } from '@/lib/posts';
-import { formatDate } from '@/lib/utils';
+import PostMetadata from '@/components/PostMetadata';
+import TagList from '@/components/TagList';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
@@ -52,6 +53,8 @@ export default async function BlogPost({ params }: PageProps) {
     notFound();
   }
 
+  // Type assertion needed due to complex rehype plugin type inference
+  // The configuration is correct but TypeScript struggles with the tuple type
   const mdxOptions = {
     mdxOptions: {
       remarkPlugins: [remarkGfm],
@@ -66,8 +69,8 @@ export default async function BlogPost({ params }: PageProps) {
               className: ['anchor'],
             },
           },
-        ] as any,
-      ],
+        ],
+      ] as any[],
     },
   };
 
@@ -75,29 +78,12 @@ export default async function BlogPost({ params }: PageProps) {
     <article className="container max-w-3xl mx-auto py-12">
       <div className="space-y-4 mb-4">
         <h1 className="text-4xl font-bold tracking-tight">{post.metadata.title}</h1>
-        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-          <time dateTime={post.metadata.date}>{formatDate(post.metadata.date)}</time>
-          <span>•</span>
-          <span>{post.readingTime}</span>
-          {post.metadata.author && (
-            <>
-              <span>•</span>
-              <span>{post.metadata.author}</span>
-            </>
-          )}
-        </div>
-        {post.metadata.tags && post.metadata.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {post.metadata.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        <PostMetadata
+          date={post.metadata.date}
+          readingTime={post.readingTime}
+          author={post.metadata.author}
+        />
+        <TagList tags={post.metadata.tags || []} />
       </div>
 
       <div className="prose prose-gray dark:prose-invert max-w-none">
@@ -115,5 +101,3 @@ export default async function BlogPost({ params }: PageProps) {
     </article>
   );
 }
-
-// Made with Bob

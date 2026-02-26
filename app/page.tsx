@@ -2,10 +2,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getAllPosts } from '@/lib/posts';
 import { formatDate } from '@/lib/utils';
+import { SITE_CONFIG, UI_CONFIG, IMAGE_SIZES } from '@/lib/constants';
 import TerminalTyping from '@/components/TerminalTyping';
 
 export default function Home() {
-  const posts = getAllPosts().slice(0, 3); // Get latest 3 posts
+  const posts = getAllPosts().slice(0, UI_CONFIG.RECENT_POSTS_LIMIT);
 
   return (
     <div className="container py-4 md:py-6 lg:py-8">
@@ -14,11 +15,11 @@ export default function Home() {
         <div className="w-full mb-4">
           <TerminalTyping
             text="Welcome to SonicDMG"
-            speed={80}
+            speed={UI_CONFIG.TERMINAL_TYPING_SPEED}
             className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl"
           />
           <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-            AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle
+            {SITE_CONFIG.description}
           </p>
         </div>
 
@@ -27,8 +28,8 @@ export default function Home() {
           <Image
             src="/sonicdmg-action-figure.png"
             alt="SonicDMG Action Figure - Limited Edition Developer Relations Engineer with Ninja Warrior Training Action"
-            width={400}
-            height={600}
+            width={IMAGE_SIZES.actionFigure.width}
+            height={IMAGE_SIZES.actionFigure.height}
             priority
             className="mx-auto"
           />
@@ -39,7 +40,7 @@ export default function Home() {
 
         <div className="space-y-4">
           <p className="mx-auto max-w-[700px] text-gray-600 md:text-lg dark:text-gray-300">
-            Hi, I'm David Jones-Gilardi, a Devloper Relations Engineer specializing in AI agents, RAG (Retrieval-Augmented Generation),
+            Hi, I'm David Jones-Gilardi, a Developer Relations Engineer specializing in AI agents, RAG (Retrieval-Augmented Generation),
             and context engineering. When I'm not building intelligent systems and exploring LLMs,
             you'll find me training for ninja warrior obstacles.
           </p>
@@ -123,5 +124,3 @@ export default function Home() {
     </div>
   );
 }
-
-// Made with Bob

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { IMAGE_SIZES } from '@/lib/constants';
 
 export const metadata = {
   title: 'About',
@@ -16,8 +17,8 @@ export default function AboutPage() {
           <Image
             src="/david-portrait.jpg"
             alt="David Jones-Gilardi - Developer Relations Engineer and Ninja Warrior Enthusiast"
-            width={300}
-            height={300}
+            width={IMAGE_SIZES.portrait.width}
+            height={IMAGE_SIZES.portrait.height}
             className="mx-auto"
           />
           <div className="image-caption">
@@ -45,8 +46,8 @@ export default function AboutPage() {
             <Image
               src="/david-conference.jpg"
               alt="David Jones-Gilardi speaking at a technical conference"
-              width={600}
-              height={400}
+              width={IMAGE_SIZES.conference.width}
+              height={IMAGE_SIZES.conference.height}
               className="mx-auto"
             />
             <div className="image-caption">
@@ -126,5 +127,3 @@ export default function AboutPage() {
     </div>
   );
 }
-
-// Made with Bob

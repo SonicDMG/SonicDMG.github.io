@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Press_Start_2P, JetBrains_Mono } from 'next/font/google';
+import { SITE_CONFIG } from '@/lib/constants';
 import './globals.css';
 
 const pressStart2P = Press_Start_2P({
@@ -18,35 +19,35 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'SonicDMG',
-    template: '%s | SonicDMG',
+    default: SITE_CONFIG.name,
+    template: `%s | ${SITE_CONFIG.name}`,
   },
-  description: 'AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle',
+  description: SITE_CONFIG.description,
   keywords: ['AI agents', 'RAG', 'context engineering', 'LLM', 'artificial intelligence', 'ninja warrior', 'software engineering', 'technical evangelist', 'podcast'],
-  authors: [{ name: 'David Jones-Gilardi' }],
-  creator: 'David Jones-Gilardi',
+  authors: [{ name: SITE_CONFIG.author }],
+  creator: SITE_CONFIG.author,
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://sonicdmg.github.io',
-    siteName: 'SonicDMG',
-    title: 'SonicDMG',
-    description: 'AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle',
+    url: SITE_CONFIG.url,
+    siteName: SITE_CONFIG.name,
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
     images: [
       {
-        url: 'https://sonicdmg.github.io/og-image.png',
+        url: SITE_CONFIG.ogImage,
         width: 1200,
         height: 630,
-        alt: 'SonicDMG - David Jones-Gilardi',
+        alt: `${SITE_CONFIG.name} - ${SITE_CONFIG.author}`,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SonicDMG',
-    description: 'AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle',
-    creator: '@sonicdmg',
-    images: ['https://sonicdmg.github.io/og-image.png'],
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
+    creator: SITE_CONFIG.links.twitter,
+    images: [SITE_CONFIG.ogImage],
   },
   robots: {
     index: true,
@@ -67,7 +68,7 @@ export default function RootLayout({
             <div className="container flex h-14 max-w-screen-2xl items-center">
               <div className="mr-4 flex">
                 <a className="mr-6 flex items-center space-x-2" href="/">
-                  <span className="font-bold text-xl">SonicDMG</span>
+                  <span className="font-bold text-xl">{SITE_CONFIG.name}</span>
                 </a>
                 <nav className="flex items-center space-x-6 text-sm font-medium">
                   <a
@@ -90,7 +91,7 @@ export default function RootLayout({
           <footer className="border-t border-border/40 py-6 md:py-0">
             <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
               <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                Built with Next.js, TypeScript, and Tailwind CSS. © {new Date().getFullYear()} David Jones-Gilardi
+                Built with Next.js, TypeScript, and Tailwind CSS. © {new Date().getFullYear()} {SITE_CONFIG.author}
               </p>
             </div>
           </footer>
@@ -99,5 +100,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// Made with Bob

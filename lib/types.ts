@@ -2,6 +2,7 @@ export interface PostMetadata {
   title: string;
   date: string;
   description: string;
+  excerpt?: string; // Legacy field, will be normalized to description
   tags?: string[];
   category?: string;
   author?: string;
@@ -15,9 +16,3 @@ export interface Post {
   content: string;
   readingTime: string;
 }
-
-export interface PostCardProps {
-  post: Post;
-}
-
-// Made with Bob

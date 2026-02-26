@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/posts';
-import { formatDate } from '@/lib/utils';
+import PostMetadata from '@/components/PostMetadata';
+import TagList from '@/components/TagList';
 
 export const metadata = {
   title: 'Blog',
@@ -35,31 +36,12 @@ export default function BlogPage() {
                   {post.metadata.title}
                 </h2>
                 <p className="text-muted-foreground">{post.metadata.description}</p>
-                <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                  <time dateTime={post.metadata.date}>
-                    {formatDate(post.metadata.date)}
-                  </time>
-                  <span>•</span>
-                  <span>{post.readingTime}</span>
-                  {post.metadata.category && (
-                    <>
-                      <span>•</span>
-                      <span className="capitalize">{post.metadata.category}</span>
-                    </>
-                  )}
-                </div>
-                {post.metadata.tags && post.metadata.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {post.metadata.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                <PostMetadata
+                  date={post.metadata.date}
+                  readingTime={post.readingTime}
+                  category={post.metadata.category}
+                />
+                <TagList tags={post.metadata.tags || []} />
               </Link>
             </article>
           ))}
@@ -68,5 +50,3 @@ export default function BlogPage() {
     </div>
   );
 }
-
-// Made with Bob

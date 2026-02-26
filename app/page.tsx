@@ -22,7 +22,7 @@ export default function Home() {
   const posts = getAllPosts().slice(0, UI_CONFIG.RECENT_POSTS_LIMIT);
 
   return (
-    <div className="container py-4 md:py-6 lg:py-8 relative">
+    <div className="container mx-auto py-4 md:py-6 lg:py-8 relative">
       {/* Main Hero Content - Centered column layout */}
       <div className="flex flex-col items-center justify-center space-y-6 text-center">
           {/* Title at the top with terminal typing effect and podcast on the side for tablet+ */}

@@ -47,8 +47,9 @@
   --glow-secondary: rgba(0, 206, 209, 0.3);
   --glow-accent: rgba(255, 215, 0, 0.3);
   
-  /* Font stack - Press Start 2P with monospace fallback */
+  /* Font stacks */
   --font-pixel: var(--font-press-start), 'Courier New', 'Courier', monospace;
+  --font-terminal: var(--font-terminal), 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
 }
 
 /* === BASE STYLES === */
@@ -59,14 +60,14 @@
 body {
   color: var(--color-foreground);
   background: var(--color-background);
-  font-family: var(--font-press-start), 'Courier New', 'Courier', monospace;
+  font-family: var(--font-terminal);
   line-height: 1.6;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   
-  /* Subtle text glow */
-  text-shadow: 0 0 3px rgba(65, 105, 225, 0.3);
+  /* Subtle text glow for terminal font */
+  text-shadow: 0 0 2px rgba(65, 105, 225, 0.2);
 }
 
 /* Mobile font size adjustment */
@@ -249,7 +250,7 @@ pre {
   padding: 1.5em;
   overflow-x: auto;
   margin: 1.5em 0;
-  box-shadow: 
+  box-shadow:
     0 0 10px var(--glow-primary),
     inset 0 0 30px rgba(65, 105, 225, 0.05);
   position: relative;
@@ -262,6 +263,9 @@ pre code {
   color: var(--color-secondary);
   display: block;
   text-shadow: 0 0 3px var(--glow-secondary);
+  font-family: var(--font-terminal);
+  font-size: 0.9em;
+  line-height: 1.5;
 }
 
 /* === BLOCKQUOTES === */
@@ -392,7 +396,9 @@ input:focus, textarea:focus, select:focus {
 .prose {
   color: var(--color-foreground);
   max-width: 75ch;
-  font-family: var(--font-press-start), 'Courier New', 'Courier', monospace;
+  font-family: var(--font-terminal);
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
 .prose h1,
@@ -401,6 +407,7 @@ input:focus, textarea:focus, select:focus {
 .prose h4,
 .prose h5,
 .prose h6 {
+  font-family: var(--font-press-start), 'Courier New', 'Courier', monospace;
   color: var(--color-primary);
   font-weight: 400;
   margin-top: 2em;
@@ -476,9 +483,9 @@ input:focus, textarea:focus, select:focus {
   padding: 0;
   font-weight: inherit;
   color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: inherit;
+  font-size: 0.9em;
+  font-family: var(--font-terminal);
+  line-height: 1.5;
 }
 
 .prose ul,

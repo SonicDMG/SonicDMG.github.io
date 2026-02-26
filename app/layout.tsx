@@ -1,5 +1,13 @@
 import type { Metadata } from 'next';
+import { Press_Start_2P } from 'next/font/google';
 import './globals.css';
+
+const pressStart2P = Press_Start_2P({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-press-start',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -46,7 +54,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased min-h-screen bg-background text-foreground">
+      <body className={`${pressStart2P.variable} antialiased min-h-screen bg-background text-foreground`}>
         <div className="relative flex min-h-screen flex-col">
           <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-14 max-w-screen-2xl items-center">

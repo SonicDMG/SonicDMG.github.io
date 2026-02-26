@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAllPosts } from '@/lib/posts';
 import { formatDate } from '@/lib/utils';
 
@@ -8,14 +9,52 @@ export default function Home() {
   return (
     <div className="container py-12 md:py-24 lg:py-32">
       <div className="flex flex-col items-center justify-center space-y-8 text-center">
+        {/* Action Figure Hero Image */}
+        <div className="terminal-image-frame action-figure">
+          <Image
+            src="/sonicdmg-action-figure.png"
+            alt="SonicDMG Action Figure - Limited Edition Developer Relations Engineer with Ninja Warrior Training Action"
+            width={400}
+            height={600}
+            priority
+            className="mx-auto"
+          />
+          <div className="image-caption">
+            [COLLECTOR'S EDITION]
+          </div>
+        </div>
+
         <div className="space-y-4">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
             Welcome to SonicDMG
           </h1>
           <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-            Technical blog about software engineering, distributed systems, and technology.
-            Exploring the intersection of code, architecture, and innovation.
+            AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle
           </p>
+          <p className="mx-auto max-w-[700px] text-gray-600 md:text-lg dark:text-gray-300">
+            Hi, I'm David Jones-Gilardi, a Technical Evangelist specializing in AI agents, RAG (Retrieval-Augmented Generation),
+            and context engineering. When I'm not building intelligent systems and exploring LLMs,
+            you'll find me training for ninja warrior obstacles.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 pt-2">
+            <a
+              href="https://www.linkedin.com/in/david-gilardi/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              LinkedIn
+            </a>
+            <span className="text-muted-foreground">•</span>
+            <a
+              href="https://youtube.com/playlist?list=PLkxCRYFY2hAyQDprZo_nyTtnxJ78S7sKH&si=xnRgepxoG_pYCOyQ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Podcast
+            </a>
+          </div>
         </div>
         <div className="space-x-4">
           <Link

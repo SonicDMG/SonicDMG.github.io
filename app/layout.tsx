@@ -3,25 +3,39 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'SonicDMG Blog',
-    template: '%s | SonicDMG Blog',
+    default: 'SonicDMG',
+    template: '%s | SonicDMG',
   },
-  description: 'Technical blog about software engineering, distributed systems, and technology',
-  keywords: ['blog', 'software engineering', 'distributed systems', 'cassandra', 'datastax', 'technology'],
-  authors: [{ name: 'David Gilardi' }],
-  creator: 'David Gilardi',
+  description: 'AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle',
+  keywords: ['AI agents', 'RAG', 'context engineering', 'LLM', 'artificial intelligence', 'ninja warrior', 'software engineering', 'technical evangelist', 'podcast'],
+  authors: [{ name: 'David Jones-Gilardi' }],
+  creator: 'David Jones-Gilardi',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://sonicdmg.github.io',
-    siteName: 'SonicDMG Blog',
-    title: 'SonicDMG Blog',
-    description: 'Technical blog about software engineering, distributed systems, and technology',
+    siteName: 'SonicDMG',
+    title: 'SonicDMG',
+    description: 'AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle',
+    images: [
+      {
+        url: 'https://sonicdmg.github.io/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'SonicDMG - David Jones-Gilardi',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SonicDMG Blog',
-    description: 'Technical blog about software engineering, distributed systems, and technology',
+    title: 'SonicDMG',
+    description: 'AI agents, RAG, context engineering, and ninja warrior training all rolled up into one, oddly shaped...bundle',
+    creator: '@sonicdmg',
+    images: ['https://sonicdmg.github.io/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -61,7 +75,7 @@ export default function RootLayout({
           <footer className="border-t border-border/40 py-6 md:py-0">
             <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
               <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                Built with Next.js, TypeScript, and Tailwind CSS. © {new Date().getFullYear()} David Gilardi
+                Built with Next.js, TypeScript, and Tailwind CSS. © {new Date().getFullYear()} David Jones-Gilardi
               </p>
             </div>
           </footer>

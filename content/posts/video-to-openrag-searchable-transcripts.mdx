@@ -14,7 +14,7 @@ As a content creator myself, I've recorded many dozens of videos, and some of th
 Now imagine searching through 12 hours of podcast content and finding the exact timestamp where a specific topic was discussed - in seconds, not scrubbing through timelines, not relying on vague memories. Just asking a question and getting the precise moment with full context. 
 
 That's exactly what I built with [https://github.com/SonicDMG/video_to_openrag](https://github.com/SonicDMG/video_to_openrag) using [Docling](https://www.docling.ai/) and [OpenRAG](https://www.openr.ag/). 
-(_As of this writing, OpenRAG is in open preview on_ [_version 0.2.5_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better.)_
+(_As of this writing, OpenRAG is new open source development in open preview on_ [_version 0.2.5_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your feedback or help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better.)_
 ![Plugged in to Docling and OpenRAG](/posts/video-to-openrag-searchable-transcripts/plugged_in.png)
 
 ## The Problem We All Know Too Well
@@ -40,7 +40,7 @@ Video to **OpenRAG** is a Python pipeline that transforms YouTube videos into se
 
 The best part is that everything runs locally. No API keys for transcription, no sending your data to third-party services, no usage limits. Your video recordings stay on your machine.
 
-_I particularly love Ollama's cloud based models, cheap access, solid performance, and the same privacy we've come to expect from them. It does mean I'm using their cloud, but I could run models completely locally if needed._
+(_I particularly love Ollama's cloud based models, cheap access, solid performance, and the same privacy we've come to expect from them. It does mean I'm using their cloud, but I could run models completely locally if needed._)
 
 ## Let's See it in Action
 
@@ -57,7 +57,7 @@ Here's a conversation with the OpenRAG agent searching through that content.
 ### Now the fun part:
 ![OpenRAG agent response with timestamps](/posts/video-to-openrag-searchable-transcripts/question-3.png)
 
-_It took seconds to search through 12 hours of content and find exact moments - something that would have taken me hours of manual searching and scrubbing through timelines._
+(_It took seconds to search through 12 hours of content and find exact moments - something that would have taken me hours of manual searching and scrubbing through timelines._)
 
 ### Feel free to try these yourself
 
@@ -85,7 +85,7 @@ I was honestly super impressed by the accuracy of the recall and **OpenRAG**'s a
 
 I was inspired recently to write this app after reading Tejas Kumar's post "From Audio to Searchable Text" that demonstrated how to expose **Docling**'s audio ingestion capabilities in less than 30 lines of code. The moment I read it, I was like "OMG, I can use this for my video content!". So here we are.
 
-_Tejas's original post uses mp3 which can also work for videos, but while coding I learned that Docling also handles video formats like mp4 so I switched gears to interface with videos directly instead of converting them to audio._ 
+(_Tejas's original post uses mp3 which can also work for videos, but while coding I learned that Docling also handles video formats like mp4 so I switched gears to interface with videos directly instead of converting them to audio._)
 
 Using his template, I derived this app that extends those capabilities for video and leverages **Docling**'s built in capabilities to transcribe both text and timestamps.
 
@@ -148,4 +148,4 @@ Make your video library searchable!
 
 The code is MIT-licensed; you're free to [use it](https://github.com/SonicDMG/video_to_openrag) however you see fit. Build something cool? I'd love to hear about it. 
 
-_As of this writing, OpenRAG is in open preview on_ [_version 0.2.5_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better._
+(_As of this writing, OpenRAG is new open source developlment in open preview on_ [_version 0.2.5_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your feedback or help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better._)

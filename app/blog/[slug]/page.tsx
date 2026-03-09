@@ -3,6 +3,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { getAllPosts, getPostBySlug } from '@/lib/posts';
 import PostMetadata from '@/components/PostMetadata';
 import TagList from '@/components/TagList';
+import ZoomableImage from '@/components/ZoomableImage';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
@@ -87,7 +88,23 @@ export default async function BlogPost({ params }: PageProps) {
       </div>
 
       <div className="prose prose-gray dark:prose-invert max-w-none">
-        <MDXRemote source={post.content} options={mdxOptions} />
+        <MDXRemote
+          source={post.content}
+          options={mdxOptions}
+          components={{
+            img: (props: any) => <ZoomableImage src={props.src} alt={props.alt || ''} />,
+            a: (props: any) => {
+              const isExternal = props.href?.startsWith('http');
+              return (
+                <a
+                  {...props}
+                  target={isExternal ? '_blank' : undefined}
+                  rel={isExternal ? 'noopener noreferrer' : undefined}
+                />
+              );
+            },
+          }}
+        />
       </div>
 
       <div className="mt-12 pt-8 border-t">

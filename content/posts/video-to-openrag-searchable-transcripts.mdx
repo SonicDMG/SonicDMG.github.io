@@ -14,7 +14,7 @@ As a content creator myself, I've recorded many dozens of videos, and some of th
 Now imagine searching through 12 hours of podcast content and finding the exact timestamp where a specific topic was discussed - in seconds, not scrubbing through timelines, not relying on vague memories. Just asking a question and getting the precise moment with full context. 
 
 That's exactly what I built with [https://github.com/SonicDMG/video_to_openrag](https://github.com/SonicDMG/video_to_openrag) using [Docling](https://www.docling.ai/) and [OpenRAG](https://www.openr.ag/). 
-(_As of this writing, OpenRAG is new open source development in open preview on_ [_version 0.2.5_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your feedback or help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better.)_
+(_As of this writing, OpenRAG is new open source development in open preview on_ [_version 0.4.0_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your feedback or help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better.)_
 ![Plugged in to Docling and OpenRAG](/posts/video-to-openrag-searchable-transcripts/plugged_in.png)
 
 ## The Problem We All Know Too Well
@@ -83,9 +83,9 @@ I was honestly super impressed by the accuracy of the recall and **OpenRAG**'s a
 
 ## Inspiration
 
-I was inspired recently to write this app after reading Tejas Kumar's post "From Audio to Searchable Text" that demonstrated how to expose **Docling**'s audio ingestion capabilities in less than 30 lines of code. The moment I read it, I was like "OMG, I can use this for my video content!". So here we are.
+I was inspired recently to write this app after watching Tejas Kumar's video ["Unlocking Video Knowledge with Docling: Transcribe & Query with AI"](https://youtu.be/AXrmMo3GzT0?si=wphEKfr1dpNOFrwQ) that demonstrated how to expose **Docling**'s audio ingestion capabilities in less than 30 lines of code. The moment I watched it, I was like "OMG, I can use this for my video content!". So here we are.
 
-(_Tejas's original post uses mp3 which can also work for videos, but while coding I learned that Docling also handles video formats like mp4 so I switched gears to interface with videos directly instead of converting them to audio._)
+(_Tejas's [original video](https://youtu.be/AXrmMo3GzT0?si=wphEKfr1dpNOFrwQ) uses mp3 which can also work for videos, but while coding I learned that Docling also handles video formats like mp4 so I switched gears to interface with videos directly instead of converting them to audio._)
 
 Using his template, I derived this app that extends those capabilities for video and leverages **Docling**'s built in capabilities to transcribe both text and timestamps.
 
@@ -148,4 +148,4 @@ Make your video library searchable!
 
 The code is MIT-licensed; you're free to [use it](https://github.com/SonicDMG/video_to_openrag) however you see fit. Build something cool? I'd love to hear about it. 
 
-(_As of this writing, OpenRAG is new open source developlment in open preview on_ [_version 0.2.5_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your feedback or help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better._)
+(_As of this writing, OpenRAG is new open source developlment in open preview on_ [_version 0.4.0_](https://github.com/langflow-ai/openrag/releases)_. We'd_ [_love your feedback or help contributing_](https://docs.openr.ag/support/contribute/) _to OpenRAG to make it even better._)

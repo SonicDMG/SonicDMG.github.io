@@ -28,7 +28,7 @@ export default function AboutPage() {
 
         <div className="prose prose-gray dark:prose-invert max-w-none">
           <p className="text-lg text-muted-foreground">
-            Hey there! I'm David Gilardi—a Developer Relations Engineer at IBM who's equally comfortable
+            Hey there! I'm David Gilardi, a Developer Relations Engineer at IBM who's equally comfortable
             debugging distributed databases and training for ninja warrior obstacles. Welcome to my corner
             of the internet where tech meets athleticism.
           </p>
@@ -65,29 +65,27 @@ export default function AboutPage() {
           <h2>Beyond the Keyboard</h2>
           <p>
             When I'm not writing code or creating content, you'll find me training for ninja warrior
-            competitions—because apparently, I enjoy challenging myself both mentally and physically.
+            competitions—because apparently, I'm an almost 50 year old who's trying to see how many ways I an break my body.
             I have a background in aerial arts (aerial silks and fabric climbing), which taught me a lot
-            about persistence, body awareness, and the importance of a good grip.
+            about breathing, body awareness, and the importance of a good grip.
           </p>
           <p>
             I'm also a huge sci-fi and fantasy enthusiast, a gamer when time permits, and someone who
             genuinely enjoys home improvement projects (there's something satisfying about fixing things
-            with your hands). And yes, I tinker with technology at home too—because apparently, I can't
-            get enough of it.
+            with your hands). I'm also building my own 2D pixel art rougelite Steam game which I hope to get out in 2026.
           </p>
 
           <h2>Personal Life</h2>
           <p>
-            I'm married with a family, and they're remarkably patient with my various obsessions—from
-            late-night coding sessions to training for obstacle courses in the backyard. Life is about
-            balance, even if that balance sometimes involves hanging upside down from aerial silks.
+            I'm married with a family, and they're remarkably patient with my
+            late-night game coding sessions.
           </p>
 
           <h2>What You'll Find Here</h2>
           <p>
             This blog is where I share insights about distributed systems, databases, AI, developer
             relations, and whatever else catches my technical curiosity. I try to write the kind of
-            content I wish I had when I was learning these topics—practical, honest, and hopefully
+            content I like when learning topics—practical, honest, and hopefully
             helpful.
           </p>
 

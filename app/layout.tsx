@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Press_Start_2P, JetBrains_Mono } from 'next/font/google';
 import { SITE_CONFIG } from '@/lib/constants';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import './globals.css';
 
 const pressStart2P = Press_Start_2P({
@@ -63,6 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${pressStart2P.variable} ${jetbrainsMono.variable} antialiased min-h-screen bg-background text-foreground`}>
+        <GoogleAnalytics measurementId="G-GK6B2TFEY5" />
         <div className="relative flex min-h-screen flex-col">
           <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-14 max-w-screen-2xl items-center">

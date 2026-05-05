@@ -4,6 +4,8 @@ import { getAllPosts, getPostBySlug } from '@/lib/posts';
 import PostMetadata from '@/components/PostMetadata';
 import TagList from '@/components/TagList';
 import ZoomableImage from '@/components/ZoomableImage';
+import YouTubeEmbed from '@/components/YouTubeEmbed';
+import CollapsibleVideo from '@/components/CollapsibleVideo';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
@@ -87,12 +89,23 @@ export default async function BlogPost({ params }: PageProps) {
         <TagList tags={post.metadata.tags || []} />
       </div>
 
+      {/* Video embed for video-to-openrag post */}
+      {slug === 'video-to-openrag-searchable-transcripts' && (
+        <CollapsibleVideo
+          videoId="Y0b1TANWZ-Y"
+          title="Making Video Content Searchable with Docling and OpenRAG"
+          summary="📺 Prefer to watch instead of read? Click here to view the video walkthrough"
+        />
+      )}
+
       <div className="prose prose-gray dark:prose-invert max-w-none">
         <MDXRemote
           source={post.content}
           options={mdxOptions}
           components={{
             img: (props: any) => <ZoomableImage src={props.src} alt={props.alt || ''} />,
+            YouTubeEmbed,
+            CollapsibleVideo,
             a: (props: any) => {
               const isExternal = props.href?.startsWith('http');
               return (

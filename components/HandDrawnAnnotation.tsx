@@ -37,6 +37,7 @@ export default function HandDrawnAnnotation({
       style={{
         transform: `scale(${scale}) rotate(${rotation}deg)`,
         transformOrigin: 'center',
+        display: 'none', // Hidden for now - can be re-enabled later
       }}
       aria-label="Create your own CodeBeast at codebeasts.ai"
     >
